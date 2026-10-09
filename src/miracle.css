@@ -1,10 +1,10 @@
 /* 미라클 챌린지 — 마이미라클 소비자 화면과 같은 결 + 마이미라클 연노랑
-   흰 바탕 · 가는 선 · 모노 라벨 · 연노랑 포인트(#FADF96 · #FFF8E1) · 검정 단추 */
+   흰 바탕 · 가는 선 · 모노 라벨 · 옅은 노랑 포인트(#FFF3CC · #FFFAEB) · 옅은 노랑 단추 */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 :root{
   --mc-ink:#1a1a18; --mc-ink2:#2b2b2e; --mc-sub:#8a8a90; --mc-mute:#b0b0b5;
   --mc-line:#EFEDE8; --mc-line2:#ececec; --mc-rule:#dcdcde;
-  --mc-y:#FADF96; --mc-y2:#E6C25A; --mc-ysoft:#FFF8E1; --mc-ypale:#FFFCF2; --mc-yline:#F5E6B8; --mc-yink:#4A3B00;
+  --mc-y:#FFF3CC; --mc-y2:#EED38A; --mc-ysoft:#FFFAEB; --mc-ypale:#FFFDF6; --mc-yline:#F6EACB; --mc-yink:#6B5414;
   --mc-mono:ui-monospace,"SF Mono","Roboto Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
@@ -38,8 +38,8 @@ button,input{font-family:inherit}
 .mc-stats div.y b::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mc-y2);margin-left:8px;vertical-align:5px}
 .mc-hero .mc-act{margin-top:22px}
 
-.mc-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--mc-y);color:var(--mc-yink);font-weight:700;font-size:14.5px;letter-spacing:.01em;padding:14px 22px;border-radius:10px;border:1px solid #F2D27A;cursor:pointer;text-decoration:none;transition:background .15s ease}
-.mc-go:hover{background:#F7D77F}
+.mc-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--mc-y);color:var(--mc-yink);font-weight:700;font-size:14.5px;letter-spacing:.01em;padding:14px 22px;border-radius:10px;border:1px solid #F1E2B4;cursor:pointer;text-decoration:none;transition:background .15s ease}
+.mc-go:hover{background:#FFEDB8}
 .mc-go:disabled{opacity:.5;cursor:default}
 .mc-sub{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#2b2b2e;font-weight:600;font-size:14.5px;padding:13px 20px;border-radius:10px;border:1px solid var(--mc-rule);cursor:pointer}
 .mc-sub:hover{background:#fafafa}

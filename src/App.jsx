@@ -172,10 +172,10 @@ function PhotoModal({ routine, userId, challengeId, today, onClose, onUploaded }
         <div style={{ fontSize:14, color:"#888", marginBottom:20 }}>{done ? "인증 완료! 🎉" : "인증 사진을 올려주세요 📸"}</div>
         {preview && <img src={preview} alt="미리보기" style={{ width:"100%", borderRadius:4, marginBottom:16, maxHeight:220, objectFit:"cover" }} />}
         {done ? (
-          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"1px solid #F2D27A", background:"#FADF96", color:"#4A3B00", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
+          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"1px solid #F1E2B4", background:"#FFF3CC", color:"#6B5414", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#FADF96", color:"#4A3B00", fontWeight:600, fontSize:15, cursor:"pointer" }}>
+            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#FFF3CC", color:"#6B5414", fontWeight:600, fontSize:15, cursor:"pointer" }}>
               <input type="file" accept="image/*" capture="environment" style={{ display:"none" }} onChange={handleFile} />
               {uploading ? "업로드 중..." : "📷 지금 사진 찍기"}
             </label>
@@ -376,7 +376,7 @@ function AdminPanel({ userId, onBack }) {
                       </div>
                     </div>
                     <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
-                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#E6C25A", borderRadius:3 }} />
+                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#EED38A", borderRadius:3 }} />
                     </div>
                     <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일 완료</div>
                     {m.todayPhotos.length > 0 && (
@@ -395,7 +395,7 @@ function AdminPanel({ userId, onBack }) {
             {tab === "codes" && (
               <div>
                 <button onClick={() => generateCode(selectedChallenge.id)}
-                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"1px solid #F2D27A", background:"#FADF96", color:"#4A3B00", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
+                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"1px solid #F1E2B4", background:"#FFF3CC", color:"#6B5414", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
                   + 새 초대 코드 생성
                 </button>
                 {codes.map(c => (
@@ -468,7 +468,7 @@ function AdminPanel({ userId, onBack }) {
               </div>
             </div>
             <button onClick={createChallenge} disabled={!selectedTemplate || creating}
-              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#FADF96" : "#eee", color: selectedTemplate ? "#4A3B00" : "#999", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
+              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#FFF3CC" : "#eee", color: selectedTemplate ? "#6B5414" : "#999", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
               {creating ? "생성 중..." : "챌린지 열기 🚀"}
             </button>
           </div>
@@ -543,7 +543,7 @@ function LeaderPanel({ userId, challenges, onBack }) {
                   }
                 </div>
                 <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#E6C25A", borderRadius:3 }} />
+                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#EED38A", borderRadius:3 }} />
                 </div>
                 <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일</div>
                 {m.todayPhotos.length > 0 && (
@@ -651,7 +651,7 @@ function ChallengeHome({ challenge, userId }) {
   return (
     <div>
       {celebration && (
-        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#FADF96", color:"#4A3B00", padding:"12px 28px", borderRadius:4, fontWeight:700, zIndex:300, fontSize:16 }}>
+        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#FFF3CC", color:"#6B5414", padding:"12px 28px", borderRadius:4, fontWeight:700, zIndex:300, fontSize:16 }}>
           🎉 오늘의 루틴 완료!
         </div>
       )}
@@ -665,8 +665,8 @@ function ChallengeHome({ challenge, userId }) {
           <div className="mc-eb">Progress · 진행</div>
           <div style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{elapsed} / 21일 · {progress}%</div>
         </div>
-        <div style={{ height:4, background:"rgba(230,194,90,.25)", marginTop:12, borderRadius:2, overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${progress}%`, background:"#E6C25A", borderRadius:2 }} />
+        <div style={{ height:4, background:"rgba(238,211,138,.3)", marginTop:12, borderRadius:2, overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${progress}%`, background:"#EED38A", borderRadius:2 }} />
         </div>
       </div>
 
@@ -685,7 +685,7 @@ function ChallengeHome({ challenge, userId }) {
           <span style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{doneCount} / {routines.length}</span>
         </div>
         <div style={{ height:4, background:"#F3F2EE", borderRadius:2, overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${pct}%`, background:"#E6C25A", borderRadius:2, transition:"width 0.4s" }} />
+          <div style={{ height:"100%", width:`${pct}%`, background:"#EED38A", borderRadius:2, transition:"width 0.4s" }} />
         </div>
       </div>
 
@@ -693,7 +693,7 @@ function ChallengeHome({ challenge, userId }) {
         {routines.map((r, i) => (
           <div key={r.id} style={{ borderBottom:"1px solid #ececec" }}>
             <div style={{ background:"#fff", padding:"18px 6px", display:"flex", alignItems:"center", gap:12 }}>
-              <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", background: r.done ? "#FFF8E1" : "#F6F5F1", color: r.done ? "#4A3B00" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12 }}>{String(i+1).padStart(2,"0")}</div>
+              <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", background: r.done ? "#FFFAEB" : "#F6F5F1", color: r.done ? "#6B5414" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12 }}>{String(i+1).padStart(2,"0")}</div>
               <div style={{ flex:1 }}>
                 <div style={{ fontWeight:500, fontSize:15.5, color: r.done ? "#9a9aa0" : "#2b2b2e", textDecoration: r.done ? "line-through" : "none", textDecorationColor:"#c4c4c8" }}>{r.name}</div>
                 <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".04em", color:"#9a9aa0", marginTop:5, display:"flex", gap:8 }}>
@@ -705,7 +705,7 @@ function ChallengeHome({ challenge, userId }) {
               {r.done && !r.photoUrl && (
                 <button onClick={() => setPhotoModal(r)} style={{ background:"#fff", border:"1px solid #dcdcde", borderRadius:8, padding:"7px 12px", fontSize:13, fontWeight:600, color:"#2b2b2e", cursor:"pointer", flexShrink:0 }}>사진 인증</button>
               )}
-              <button onClick={() => toggleRoutine(r)} aria-label="완료" style={{ width:28, height:28, borderRadius:6, border:"none", background: r.done ? "#FADF96" : "transparent", outline: r.done ? "none" : "1px solid #c4c4c8", color:"#4A3B00", fontWeight:800, fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              <button onClick={() => toggleRoutine(r)} aria-label="완료" style={{ width:28, height:28, borderRadius:6, border:"none", background: r.done ? "#FFF3CC" : "transparent", outline: r.done ? "none" : "1px solid #c4c4c8", color:"#6B5414", fontWeight:800, fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                 {r.done ? "✓" : ""}
               </button>
             </div>
@@ -764,9 +764,9 @@ function Leaderboard({ challenge }) {
       </div>
       {members.length === 0 && <div style={{ color:"#9a9aa0", padding:"2rem 0", fontSize:14 }}>아직 기록 없음</div>}
       {members.map((m, i) => (
-        <div key={m.id} style={{ background: i===0 ? "#FFF8E1" : "#fff", border: i===0 ? "1px solid #F5E6B8" : "none", borderRadius: i===0 ? 8 : 0, borderBottom: i===0 ? "1px solid #F5E6B8" : "1px solid #ececec", padding: i===0 ? "18px 14px" : "18px 6px", marginBottom: i===0 ? 8 : 0 }}>
+        <div key={m.id} style={{ background: i===0 ? "#FFFAEB" : "#fff", border: i===0 ? "1px solid #F6EACB" : "none", borderRadius: i===0 ? 8 : 0, borderBottom: i===0 ? "1px solid #F6EACB" : "1px solid #ececec", padding: i===0 ? "18px 14px" : "18px 6px", marginBottom: i===0 ? 8 : 0 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <div style={{ width:34, height:34, borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", background: i===0 ? "#FADF96" : "#F6F5F1", color: i===0 ? "#4A3B00" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12, fontWeight: i===0 ? 700 : 400 }}>{String(i+1).padStart(2,"0")}</div>
+            <div style={{ width:34, height:34, borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", background: i===0 ? "#FFF3CC" : "#F6F5F1", color: i===0 ? "#6B5414" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12, fontWeight: i===0 ? 700 : 400 }}>{String(i+1).padStart(2,"0")}</div>
             <div style={{ flex:1 }}>
               <div style={{ fontWeight:500, fontSize:15.5, color:"#2b2b2e" }}>{m.nickname || "참가자"}{m.role==="leader" ? " · 리더" : ""}</div>
               <div style={{ display:"flex", gap:8, marginTop:4, flexWrap:"wrap" }}>
@@ -845,7 +845,7 @@ function ChallengeDetail({ challenge, userId, userRole, onBack }) {
         </div>
         <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:720, background:"rgba(255,255,255,.96)", borderTop:"1px solid #dcdcde", display:"flex", justifyContent:"space-around", padding:"0 0 calc(10px + env(safe-area-inset-bottom))" }}>
           {tabs.map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", padding:"8px 18px", color: tab===t.key ? "#111" : "#9a9aa0", fontWeight: tab===t.key ? 700 : 500, fontSize:14, borderTop: tab===t.key ? "3px solid #E6C25A" : "3px solid transparent" }}>{t.label}</button>
+            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", padding:"8px 18px", color: tab===t.key ? "#111" : "#9a9aa0", fontWeight: tab===t.key ? 700 : 500, fontSize:14, borderTop: tab===t.key ? "3px solid #EED38A" : "3px solid transparent" }}>{t.label}</button>
           ))}
         </div>
       </div>
