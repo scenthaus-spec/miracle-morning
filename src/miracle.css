@@ -1,0 +1,78 @@
+/* 미라클 챌린지 — 마이미라클 소비자 화면과 같은 디자인
+   흰 바탕 · 가는 구분선 · 모노 글씨 라벨 · 가는 제목 · 검정 단추 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+:root{
+  --mc-ink:#1a1a18; --mc-ink2:#2b2b2e; --mc-sub:#8a8a90; --mc-mute:#b0b0b5;
+  --mc-line:#e6e6e8; --mc-line2:#ececec; --mc-rule:#dcdcde;
+  --mc-mono:ui-monospace,"SF Mono","Roboto Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--mc-ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+
+.mc{max-width:720px;margin:0 auto;padding:26px 22px 80px}
+.mc-nav{display:flex;align-items:center;justify-content:flex-end;gap:18px;min-height:36px}
+.mc-nav button{font-family:var(--mc-mono);font-size:12.5px;letter-spacing:.02em;color:#9a9aa0;background:none;border:0;cursor:pointer;padding:6px 0}
+.mc-nav button:hover{color:#111}
+.mc-nav button.dk{background:#111;color:#fff;font-weight:600;padding:9px 14px;border-radius:10px;letter-spacing:.04em}
+.mc-eb{font-family:var(--mc-mono);font-size:12px;letter-spacing:.14em;color:#8d8d8d;text-transform:uppercase}
+.mc-h{margin:10px 0 0;font-size:clamp(24px,4vw,30px);font-weight:400;letter-spacing:-.01em;line-height:1.2;color:#111}
+.mc-lead{margin:10px 0 0;font-size:14px;line-height:1.6;color:#6a6a6e}
+.mc-top{margin-top:30px}
+.mc-sec{margin-top:44px}
+
+.mc-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#111;color:#fff;font-weight:600;font-size:14.5px;letter-spacing:.02em;padding:14px 22px;border-radius:10px;border:0;cursor:pointer;text-decoration:none}
+.mc-go:hover{background:#2b2b2e}
+.mc-go:disabled{opacity:.5;cursor:default}
+.mc-sub{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#2b2b2e;font-weight:600;font-size:14.5px;padding:13px 20px;border-radius:10px;border:1px solid var(--mc-rule);cursor:pointer}
+.mc-sub:hover{background:#fafafa}
+.mc-link{background:none;border:0;cursor:pointer;font-family:var(--mc-mono);font-size:12.5px;letter-spacing:.02em;color:#9a9aa0;padding:6px 0}
+.mc-link:hover{color:#111}
+
+/* 줄 목록 */
+.mc-rows{margin-top:12px;border-top:1px solid var(--mc-rule)}
+.mc-r{border-bottom:1px solid var(--mc-line2)}
+.mc-rh{display:flex;align-items:center;gap:14px;width:100%;padding:20px 8px;background:none;border:0;text-align:left;cursor:pointer;color:#3a3a3e;font-size:15.5px;transition:padding-left .18s ease,color .15s ease}
+.mc-rh:hover{padding-left:14px;color:#111}
+.mc-no{flex:none;width:26px;font-family:var(--mc-mono);font-size:12px;color:var(--mc-mute);letter-spacing:.04em}
+.mc-nm{flex:1;min-width:0}
+.mc-nm b{display:block;font-weight:500;color:var(--mc-ink2);letter-spacing:-.01em}
+.mc-nm small{display:block;margin-top:5px;font-size:12.5px;color:var(--mc-sub)}
+.mc-st{flex:none;font-family:var(--mc-mono);font-size:11.5px;letter-spacing:.04em;color:#9a9aa0}
+.mc-st.on{color:#111}
+.mc-ar{flex:none;width:16px;height:16px;color:#b3b3b3;transition:transform .25s ease}
+.mc-r.open .mc-ar{transform:rotate(90deg)}
+.mc-bar{display:block;height:2px;background:var(--mc-line);margin-top:10px;overflow:hidden}
+.mc-bar i{display:block;height:100%;background:#111}
+.mc-x{flex:none;background:none;border:0;color:#c4c4c8;font-size:16px;cursor:pointer;padding:4px 6px}
+.mc-x:hover{color:#111}
+
+/* 펼친 루틴 */
+.mc-rt{padding:0 8px 18px 48px}
+.mc-rt li{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14.5px;color:#55555a;list-style:none}
+.mc-rt li::before{content:"\2013";color:var(--mc-mute)}
+.mc-rt li span{flex:1}
+.mc-rt li em{font-style:normal;font-family:var(--mc-mono);font-size:12px;color:#9a9aa0}
+.mc-rt p{margin:8px 0 0;font-family:var(--mc-mono);font-size:11.5px;letter-spacing:.04em;color:#9a9aa0}
+.mc-rt ul{margin:0;padding:0}
+
+/* 입력 — 밑줄만 */
+.mc-form{margin-top:26px;padding:24px 0 6px;border-top:1px solid var(--mc-rule)}
+.mc-fld{display:block;margin-bottom:16px}
+.mc-fld span{display:block;font-family:var(--mc-mono);font-size:11.5px;letter-spacing:.1em;color:#8d8d8d;text-transform:uppercase}
+.mc-fld input{width:100%;border:0;border-bottom:1px solid var(--mc-rule);border-radius:0;outline:0;background:none;font-size:16px;color:#111;padding:12px 2px}
+.mc-fld input:focus{border-bottom-color:#111}
+.mc-fld input::placeholder{color:#b5b5ba}
+.mc-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.mc-err{margin:0 0 12px;font-size:13.5px;color:#a8463a}
+
+/* 로그인 */
+.mc-login{max-width:420px;margin:0 auto;padding:clamp(48px,12vh,120px) 22px 80px}
+.mc-login .mc-go{width:100%;margin-top:10px}
+.mc-login .mc-alt{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+
+@media (max-width:600px){
+  .mc{padding:18px 20px 60px}
+  .mc-top .mc-go{width:100%}
+  .mc-rt{padding-left:40px}
+}

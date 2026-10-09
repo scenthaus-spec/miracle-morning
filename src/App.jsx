@@ -9,7 +9,6 @@ const supabase = createClient(
 const ADMIN_EMAIL = "dotemiracle@gmail.com"; // 관리자 이메일
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
-const COLORS = ["#E6F1FB","#EAF3DE","#FAECE7","#EEEDFE","#E1F5EE","#FAEEDA","#FBEAF0","#F1EFE8","#FCEBEB"];
 
 const ALL_CHALLENGES = [
   { name: "01 감정 아로마 21일 챌린지", icon: "💚", routines: [
@@ -136,7 +135,7 @@ function isActive(c) {
 function Spinner() {
   return (
     <div style={{ display:"flex", justifyContent:"center", padding:"3rem" }}>
-      <div style={{ width:32, height:32, border:"3px solid #e8e8e8", borderTop:"3px solid #1D9E75", borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
+      <div style={{ width:32, height:32, border:"3px solid #e6e6e8", borderTop:"3px solid #111", borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
@@ -167,16 +166,16 @@ function PhotoModal({ routine, userId, challengeId, today, onClose, onUploaded }
 
   return (
     <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.7)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:300, padding:"1rem" }}>
-      <div style={{ background:"#fff", borderRadius:24, padding:"1.75rem", width:"100%", maxWidth:340, textAlign:"center" }}>
-        <div style={{ fontSize:40, marginBottom:8 }}>{routine.icon}</div>
+      <div style={{ background:"#fff", borderRadius:12, padding:"1.75rem", width:"100%", maxWidth:340, textAlign:"center" }}>
+        <div className="mc-eb" style={{ marginBottom:8 }}>Photo · 사진 인증</div>
         <div style={{ fontWeight:700, fontSize:18, marginBottom:4 }}>{routine.name}</div>
         <div style={{ fontSize:14, color:"#888", marginBottom:20 }}>{done ? "인증 완료! 🎉" : "인증 사진을 올려주세요 📸"}</div>
-        {preview && <img src={preview} alt="미리보기" style={{ width:"100%", borderRadius:14, marginBottom:16, maxHeight:220, objectFit:"cover" }} />}
+        {preview && <img src={preview} alt="미리보기" style={{ width:"100%", borderRadius:4, marginBottom:16, maxHeight:220, objectFit:"cover" }} />}
         {done ? (
-          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"none", background:"#1D9E75", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
+          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"none", background:"#111", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#1D9E75", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>
+            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#111", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>
               <input type="file" accept="image/*" capture="environment" style={{ display:"none" }} onChange={handleFile} />
               {uploading ? "업로드 중..." : "📷 지금 사진 찍기"}
             </label>
@@ -210,29 +209,24 @@ function LoginScreen({ onBack }) {
   };
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#f7f8fa" }}>
-      <div style={{ background:"#fff", borderRadius:24, padding:"2.5rem 2rem", width:"100%", maxWidth:360, textAlign:"center", boxShadow:"0 4px 24px rgba(0,0,0,0.08)" }}>
-        <div style={{ fontSize:48, marginBottom:12 }}>🌅</div>
-        <h1 style={{ fontSize:24, fontWeight:700, margin:"0 0 8px" }}>미라클 아로마</h1>
-        <p style={{ color:"#888", fontSize:14, margin:"0 0 24px" }}>21일 챌린지 인증 플랫폼</p>
-        {error && <p style={{ color:"#dc2626", fontSize:13, marginBottom:12 }}>{error}</p>}
-        <input value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일" type="email"
-          style={{ width:"100%", padding:"11px 14px", borderRadius:10, border:"1px solid #ddd", fontSize:15, marginBottom:10, boxSizing:"border-box" }} />
-        <input value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호" type="password"
-          style={{ width:"100%", padding:"11px 14px", borderRadius:10, border:"1px solid #ddd", fontSize:15, marginBottom:16, boxSizing:"border-box" }} />
-        <button onClick={handleAuth} disabled={loading}
-          style={{ width:"100%", padding:13, borderRadius:12, border:"none", background:"#1D9E75", color:"#fff", fontWeight:700, fontSize:15, cursor:"pointer", marginBottom:12 }}>
+    <div className="mc-login">
+      <div className="mc-eb">Miracle Challenge</div>
+      <h1 className="mc-h">{isSignUp ? "회원가입" : "로그인"}</h1>
+      <p className="mc-lead">21일 챌린지 참가 · 매일 인증</p>
+      <div className="mc-form">
+        {error && <p className="mc-err">{error}</p>}
+        <label className="mc-fld"><span>Email</span>
+          <input value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일" type="email" /></label>
+        <label className="mc-fld"><span>Password</span>
+          <input value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호" type="password"
+            onKeyDown={e => { if (e.key === "Enter") handleAuth(); }} /></label>
+        <button className="mc-go" onClick={handleAuth} disabled={loading}>
           {loading ? "처리 중..." : isSignUp ? "회원가입" : "로그인"}
         </button>
-        <button onClick={() => setIsSignUp(s => !s)}
-          style={{ background:"none", border:"none", color:"#1D9E75", cursor:"pointer", fontSize:14 }}>
-          {isSignUp ? "이미 계정이 있어요 → 로그인" : "계정이 없어요 → 회원가입"}
-        </button>
-        {onBack && (
-          <div style={{ marginTop:14 }}>
-            <button onClick={onBack} style={{ background:"none", border:"none", color:"#999", cursor:"pointer", fontSize:13 }}>← 로그인 없이 둘러보기</button>
-          </div>
-        )}
+        <div className="mc-alt">
+          {onBack ? <button className="mc-link" onClick={onBack}>← 둘러보기</button> : <span />}
+          <button className="mc-link" onClick={() => setIsSignUp(s => !s)}>{isSignUp ? "로그인으로" : "회원가입"}</button>
+        </div>
       </div>
     </div>
   );
@@ -333,20 +327,20 @@ function AdminPanel({ userId, onBack }) {
 
   if (selectedChallenge) {
     return (
-      <div style={{ minHeight:"100vh", background:"#f7f8fa" }}>
+      <div style={{ minHeight:"100vh", background:"#fafafa" }}>
         <div style={{ maxWidth:480, margin:"0 auto", background:"#fff", minHeight:"100vh" }}>
-          <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e8e8e8" }}>
+          <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e6e6e8" }}>
             <button onClick={() => { setSelectedChallenge(null); setCodes([]); setMembers([]); }} style={{ background:"none", border:"none", fontSize:22, cursor:"pointer" }}>←</button>
             <div style={{ flex:1, fontWeight:700, fontSize:16 }}>{selectedChallenge.name}</div>
-            <div style={{ fontSize:12, padding:"4px 10px", borderRadius:20, background: isActive(selectedChallenge) ? "#E1F5EE" : "#fee2e2", color: isActive(selectedChallenge) ? "#0F6E56" : "#991b1b", fontWeight:600 }}>
+            <div style={{ fontSize:12, padding:"4px 10px", borderRadius:4, background: isActive(selectedChallenge) ? "#f4f4f2" : "#fee2e2", color: isActive(selectedChallenge) ? "#111" : "#991b1b", fontWeight:600 }}>
               {isActive(selectedChallenge) ? "활성" : "비활성"}
             </div>
           </div>
 
-          <div style={{ display:"flex", borderBottom:"0.5px solid #e8e8e8" }}>
+          <div style={{ display:"flex", borderBottom:"0.5px solid #e6e6e8" }}>
             {[{key:"members", label:"멤버"}, {key:"codes", label:"코드"}, {key:"settings", label:"설정"}].map(t => (
               <button key={t.key} onClick={() => { setTab(t.key); if(t.key==="codes") loadCodesForChallenge(selectedChallenge.id); if(t.key==="members") loadMembersForChallenge(selectedChallenge.id); }}
-                style={{ flex:1, padding:"12px", border:"none", background:"none", borderBottom: tab===t.key ? "2px solid #1D9E75" : "none", color: tab===t.key ? "#1D9E75" : "#888", fontWeight: tab===t.key ? 700 : 400, cursor:"pointer", fontSize:14 }}>
+                style={{ flex:1, padding:"12px", border:"none", background:"none", borderBottom: tab===t.key ? "2px solid #111" : "none", color: tab===t.key ? "#111" : "#888", fontWeight: tab===t.key ? 700 : 400, cursor:"pointer", fontSize:14 }}>
                 {t.label}
               </button>
             ))}
@@ -357,7 +351,7 @@ function AdminPanel({ userId, onBack }) {
               <div>
                 <div style={{ fontWeight:600, marginBottom:12 }}>참가자 {members.length}명</div>
                 {members.map(m => (
-                  <div key={m.id} style={{ background:"#f7f8fa", borderRadius:14, padding:"1rem", marginBottom:10 }}>
+                  <div key={m.id} style={{ background:"#fafafa", borderRadius:4, padding:"1rem", marginBottom:10 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
                       <div style={{ flex:1 }}>
                         <div style={{ fontWeight:600, fontSize:14 }}>{m.nickname || "참가자"}</div>
@@ -365,22 +359,22 @@ function AdminPanel({ userId, onBack }) {
                       </div>
                       <div style={{ display:"flex", gap:6 }}>
                         <button onClick={() => setLeader(selectedChallenge.id, m.id, m.role)}
-                          style={{ padding:"4px 10px", borderRadius:8, border:"none", background: m.role==="leader" ? "#EEEDFE" : "#f0f0f0", color: m.role==="leader" ? "#534AB7" : "#888", fontSize:12, fontWeight:600, cursor:"pointer" }}>
+                          style={{ padding:"4px 10px", borderRadius:8, border:"none", background: m.role==="leader" ? "#f4f4f2" : "#f0f0f0", color: m.role==="leader" ? "#111" : "#888", fontSize:12, fontWeight:600, cursor:"pointer" }}>
                           {m.role === "leader" ? "⭐ 리더" : "리더지정"}
                         </button>
                         {m.days >= 21 && !m.completion && (
                           <button onClick={() => confirmCompletion(selectedChallenge.id, m.user_id)}
-                            style={{ padding:"4px 10px", borderRadius:8, border:"none", background:"#E1F5EE", color:"#0F6E56", fontSize:12, fontWeight:600, cursor:"pointer" }}>
+                            style={{ padding:"4px 10px", borderRadius:8, border:"none", background:"#f4f4f2", color:"#111", fontSize:12, fontWeight:600, cursor:"pointer" }}>
                             🎁 완료확인
                           </button>
                         )}
                         {m.completion && (
-                          <div style={{ padding:"4px 10px", borderRadius:8, background:"#FAEEDA", color:"#633806", fontSize:12, fontWeight:600 }}>🎁 선물완료</div>
+                          <div style={{ padding:"4px 10px", borderRadius:8, background:"#fafaf7", color:"#111", fontSize:12, fontWeight:600 }}>🎁 선물완료</div>
                         )}
                       </div>
                     </div>
-                    <div style={{ height:6, background:"#e8e8e8", borderRadius:3, overflow:"hidden" }}>
-                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#1D9E75", borderRadius:3 }} />
+                    <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
+                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#111", borderRadius:3 }} />
                     </div>
                     <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일 완료</div>
                     {m.todayPhotos.length > 0 && (
@@ -399,13 +393,13 @@ function AdminPanel({ userId, onBack }) {
             {tab === "codes" && (
               <div>
                 <button onClick={() => generateCode(selectedChallenge.id)}
-                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"none", background:"#1D9E75", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
+                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"none", background:"#111", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
                   + 새 초대 코드 생성
                 </button>
                 {codes.map(c => (
-                  <div key={c.id} style={{ background:"#f7f8fa", borderRadius:12, padding:"1rem", marginBottom:8, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                  <div key={c.id} style={{ background:"#fafafa", borderRadius:12, padding:"1rem", marginBottom:8, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                     <div>
-                      <div style={{ fontWeight:700, fontSize:18, letterSpacing:3, color: c.used_by ? "#bbb" : "#1D9E75" }}>{c.code}</div>
+                      <div style={{ fontWeight:700, fontSize:18, letterSpacing:3, color: c.used_by ? "#bbb" : "#111" }}>{c.code}</div>
                       <div style={{ fontSize:12, color:"#888", marginTop:2 }}>{c.used_by ? "✓ 사용됨" : "미사용"}</div>
                     </div>
                     <button onClick={() => navigator.clipboard.writeText(c.code)}
@@ -421,11 +415,11 @@ function AdminPanel({ userId, onBack }) {
                 <div style={{ marginBottom:16 }}>
                   <div style={{ fontSize:13, color:"#888", marginBottom:6 }}>활성화 상태</div>
                   <button onClick={() => toggleActive(selectedChallenge)}
-                    style={{ width:"100%", padding:"12px", borderRadius:12, border:"none", background: isActive(selectedChallenge) ? "#fee2e2" : "#E1F5EE", color: isActive(selectedChallenge) ? "#991b1b" : "#0F6E56", fontWeight:600, fontSize:15, cursor:"pointer" }}>
+                    style={{ width:"100%", padding:"12px", borderRadius:12, border:"none", background: isActive(selectedChallenge) ? "#fee2e2" : "#f4f4f2", color: isActive(selectedChallenge) ? "#991b1b" : "#111", fontWeight:600, fontSize:15, cursor:"pointer" }}>
                     {isActive(selectedChallenge) ? "🔒 챌린지 비활성화" : "🔓 챌린지 활성화"}
                   </button>
                 </div>
-                <div style={{ background:"#f7f8fa", borderRadius:12, padding:"1rem" }}>
+                <div style={{ background:"#fafafa", borderRadius:12, padding:"1rem" }}>
                   <div style={{ fontSize:13, color:"#888", marginBottom:4 }}>시작일</div>
                   <div style={{ fontWeight:600 }}>{selectedChallenge.start_date}</div>
                   <div style={{ fontSize:13, color:"#888", marginTop:8, marginBottom:4 }}>종료일</div>
@@ -440,21 +434,21 @@ function AdminPanel({ userId, onBack }) {
   }
 
   return (
-    <div style={{ minHeight:"100vh", background:"#f7f8fa" }}>
+    <div style={{ minHeight:"100vh", background:"#fafafa" }}>
       <div style={{ maxWidth:480, margin:"0 auto", background:"#fff", minHeight:"100vh" }}>
-        <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e8e8e8" }}>
+        <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e6e6e8" }}>
           <button onClick={onBack} style={{ background:"none", border:"none", fontSize:22, cursor:"pointer" }}>←</button>
           <div style={{ flex:1, fontWeight:700, fontSize:18 }}>👑 관리자 패널</div>
         </div>
 
         <div style={{ padding:"1rem 1.25rem" }}>
           {/* 챌린지 생성 */}
-          <div style={{ background:"#f7f8fa", borderRadius:16, padding:"1.25rem", marginBottom:16 }}>
+          <div style={{ background:"#fafafa", borderRadius:4, padding:"1.25rem", marginBottom:16 }}>
             <div style={{ fontWeight:700, marginBottom:12 }}>새 챌린지 열기</div>
             <div style={{ display:"flex", flexDirection:"column", gap:6, maxHeight:200, overflowY:"auto", marginBottom:12 }}>
               {ALL_CHALLENGES.map(c => (
                 <button key={c.name} onClick={() => setSelectedTemplate(c)}
-                  style={{ padding:"10px 14px", borderRadius:10, border:`2px solid ${selectedTemplate?.name === c.name ? "#1D9E75" : "#e8e8e8"}`, background: selectedTemplate?.name === c.name ? "#E1F5EE" : "#fff", textAlign:"left", cursor:"pointer", fontSize:14, fontWeight: selectedTemplate?.name === c.name ? 700 : 400, color: selectedTemplate?.name === c.name ? "#0F6E56" : "#333" }}>
+                  style={{ padding:"10px 14px", borderRadius:10, border:`2px solid ${selectedTemplate?.name === c.name ? "#111" : "#e6e6e8"}`, background: selectedTemplate?.name === c.name ? "#f4f4f2" : "#fff", textAlign:"left", cursor:"pointer", fontSize:14, fontWeight: selectedTemplate?.name === c.name ? 700 : 400, color: selectedTemplate?.name === c.name ? "#111" : "#333" }}>
                   {c.icon} {c.name}
                 </button>
               ))}
@@ -472,7 +466,7 @@ function AdminPanel({ userId, onBack }) {
               </div>
             </div>
             <button onClick={createChallenge} disabled={!selectedTemplate || creating}
-              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#1D9E75" : "#ccc", color:"#fff", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
+              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#111" : "#ccc", color:"#fff", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
               {creating ? "생성 중..." : "챌린지 열기 🚀"}
             </button>
           </div>
@@ -481,13 +475,13 @@ function AdminPanel({ userId, onBack }) {
           <div style={{ fontWeight:700, marginBottom:10 }}>진행 중인 챌린지</div>
           {loading ? <Spinner /> : challenges.map(c => (
             <div key={c.id} onClick={() => { setSelectedChallenge(c); setTab("members"); loadMembersForChallenge(c.id); }}
-              style={{ background:"#fff", border:`1.5px solid ${isActive(c) ? "#1D9E75" : "#e8e8e8"}`, borderRadius:14, padding:"1rem 1.25rem", marginBottom:8, cursor:"pointer" }}>
+              style={{ background:"#fff", border:`1.5px solid ${isActive(c) ? "#111" : "#e6e6e8"}`, borderRadius:4, padding:"1rem 1.25rem", marginBottom:8, cursor:"pointer" }}>
               <div style={{ display:"flex", alignItems:"center", gap:10 }}>
                 <div style={{ flex:1 }}>
                   <div style={{ fontWeight:600, fontSize:14 }}>{c.name}</div>
                   <div style={{ fontSize:12, color:"#888", marginTop:2 }}>{c.start_date} ~ {c.end_date || "무기한"}</div>
                 </div>
-                <div style={{ padding:"4px 10px", borderRadius:20, background: isActive(c) ? "#E1F5EE" : "#f0f0f0", color: isActive(c) ? "#0F6E56" : "#888", fontSize:12, fontWeight:600 }}>
+                <div style={{ padding:"4px 10px", borderRadius:4, background: isActive(c) ? "#f4f4f2" : "#f0f0f0", color: isActive(c) ? "#111" : "#888", fontSize:12, fontWeight:600 }}>
                   {isActive(c) ? "활성" : "비활성"}
                 </div>
               </div>
@@ -525,29 +519,29 @@ function LeaderPanel({ userId, challenges, onBack }) {
 
   if (selectedChallenge) {
     return (
-      <div style={{ minHeight:"100vh", background:"#f7f8fa" }}>
+      <div style={{ minHeight:"100vh", background:"#fafafa" }}>
         <div style={{ maxWidth:480, margin:"0 auto", background:"#fff", minHeight:"100vh" }}>
-          <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e8e8e8" }}>
+          <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e6e6e8" }}>
             <button onClick={() => setSelectedChallenge(null)} style={{ background:"none", border:"none", fontSize:22, cursor:"pointer" }}>←</button>
             <div style={{ fontWeight:700, fontSize:16 }}>{selectedChallenge.name}</div>
           </div>
           <div style={{ padding:"1rem 1.25rem" }}>
             <div style={{ fontWeight:600, marginBottom:12 }}>멤버 현황 ({members.length}명)</div>
             {loading ? <Spinner /> : members.map(m => (
-              <div key={m.id} style={{ background:"#f7f8fa", borderRadius:14, padding:"1rem", marginBottom:10 }}>
+              <div key={m.id} style={{ background:"#fafafa", borderRadius:4, padding:"1rem", marginBottom:10 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
                   <div style={{ flex:1 }}>
                     <div style={{ fontWeight:600, fontSize:14 }}>{m.nickname || "참가자"}</div>
                     <div style={{ fontSize:12, color:"#888" }}>{m.days}일 참가 · {m.pct}% 달성</div>
                   </div>
                   {m.completion
-                    ? <div style={{ padding:"4px 10px", borderRadius:8, background:"#FAEEDA", color:"#633806", fontSize:12, fontWeight:600 }}>🎁 완료</div>
-                    : m.days >= 21 ? <div style={{ padding:"4px 10px", borderRadius:8, background:"#E1F5EE", color:"#0F6E56", fontSize:12, fontWeight:600 }}>✅ 21일달성</div>
+                    ? <div style={{ padding:"4px 10px", borderRadius:8, background:"#fafaf7", color:"#111", fontSize:12, fontWeight:600 }}>🎁 완료</div>
+                    : m.days >= 21 ? <div style={{ padding:"4px 10px", borderRadius:8, background:"#f4f4f2", color:"#111", fontSize:12, fontWeight:600 }}>✅ 21일달성</div>
                     : null
                   }
                 </div>
-                <div style={{ height:6, background:"#e8e8e8", borderRadius:3, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#1D9E75", borderRadius:3 }} />
+                <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
+                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#111", borderRadius:3 }} />
                 </div>
                 <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일</div>
                 {m.todayPhotos.length > 0 && (
@@ -566,16 +560,16 @@ function LeaderPanel({ userId, challenges, onBack }) {
   }
 
   return (
-    <div style={{ minHeight:"100vh", background:"#f7f8fa" }}>
+    <div style={{ minHeight:"100vh", background:"#fafafa" }}>
       <div style={{ maxWidth:480, margin:"0 auto", background:"#fff", minHeight:"100vh" }}>
-        <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e8e8e8" }}>
+        <div style={{ padding:"1.25rem", display:"flex", alignItems:"center", gap:12, borderBottom:"0.5px solid #e6e6e8" }}>
           <button onClick={onBack} style={{ background:"none", border:"none", fontSize:22, cursor:"pointer" }}>←</button>
           <div style={{ fontWeight:700, fontSize:18 }}>⭐ 리더 패널</div>
         </div>
         <div style={{ padding:"1rem 1.25rem" }}>
           {challenges.filter(c => isActive(c)).map(c => (
             <div key={c.id} onClick={() => { setSelectedChallenge(c); loadMembers(c.id); }}
-              style={{ background:"#fff", border:"1.5px solid #1D9E75", borderRadius:14, padding:"1rem 1.25rem", marginBottom:8, cursor:"pointer" }}>
+              style={{ background:"#fff", border:"1.5px solid #111", borderRadius:4, padding:"1rem 1.25rem", marginBottom:8, cursor:"pointer" }}>
               <div style={{ fontWeight:600, fontSize:14 }}>{c.name}</div>
               <div style={{ fontSize:12, color:"#888", marginTop:2 }}>멤버 현황 보기 →</div>
             </div>
@@ -655,7 +649,7 @@ function ChallengeHome({ challenge, userId }) {
   return (
     <div>
       {celebration && (
-        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#1D9E75", color:"#fff", padding:"12px 28px", borderRadius:20, fontWeight:700, zIndex:300, fontSize:16 }}>
+        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#111", color:"#fff", padding:"12px 28px", borderRadius:4, fontWeight:700, zIndex:300, fontSize:16 }}>
           🎉 오늘의 루틴 완료!
         </div>
       )}
@@ -664,59 +658,56 @@ function ChallengeHome({ challenge, userId }) {
           onClose={() => setPhotoModal(null)} onUploaded={handlePhotoUploaded} />
       )}
 
-      <div style={{ background:"#f7f8fa", borderRadius:16, padding:"1rem 1.25rem", marginBottom:12 }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-          <div>
-            <div style={{ fontWeight:700, fontSize:15 }}>{challenge.name}</div>
-            <div style={{ fontSize:13, color:"#888", marginTop:2 }}>{elapsed}일째 / 총 21일</div>
-          </div>
-          <div style={{ background:"#1D9E75", color:"#fff", borderRadius:20, padding:"4px 12px", fontSize:13, fontWeight:600 }}>{progress}% 진행</div>
+      <div style={{ padding:"4px 0 0", marginBottom:30 }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline" }}>
+          <div className="mc-eb">Progress · 진행</div>
+          <div style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{elapsed} / 21일 · {progress}%</div>
         </div>
-        <div style={{ height:6, background:"#e8e8e8", borderRadius:3, marginTop:10, overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${progress}%`, background:"#1D9E75", borderRadius:3 }} />
+        <div style={{ height:2, background:"#e6e6e8", marginTop:12, overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${progress}%`, background:"#111", borderRadius:3 }} />
         </div>
       </div>
 
-      <div style={{ background: checkedIn ? "#E1F5EE" : "#fff", border:"0.5px solid #e8e8e8", borderRadius:16, padding:"1rem 1.25rem", marginBottom:12 }}>
-        <div style={{ fontSize:12, color:"#888" }}>오늘</div>
-        <div style={{ fontSize:20, fontWeight:700 }}>{formatDate()}</div>
+      <div style={{ padding:"0 0 22px", marginBottom:22, borderBottom:"1px solid #dcdcde" }}>
+        <div className="mc-eb">Today · 오늘</div>
+        <div style={{ fontSize:22, fontWeight:400, color:"#111", marginTop:8, letterSpacing:"-.01em" }}>{formatDate()}</div>
         {checkinTime
-          ? <div style={{ fontSize:13, color:"#1D9E75", marginTop:4 }}>✓ {checkinTime} 기상 체크인 완료</div>
-          : <button onClick={handleCheckin} style={{ marginTop:10, width:"100%", padding:"10px", borderRadius:10, border:"none", background:"#1D9E75", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>🌅 기상 체크인</button>
+          ? <div style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#55555a", marginTop:8, letterSpacing:".04em" }}>✓ {checkinTime} 기상 체크인</div>
+          : <button className="mc-go" onClick={handleCheckin} style={{ marginTop:14, width:"100%" }}>기상 체크인</button>
         }
       </div>
 
-      <div style={{ background:"#f7f8fa", borderRadius:16, padding:"0.875rem 1.25rem", marginBottom:12 }}>
-        <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-          <span style={{ fontWeight:600, fontSize:14 }}>오늘 루틴</span>
-          <span style={{ fontSize:14, color:"#888" }}>{doneCount} / {routines.length}</span>
+      <div style={{ marginBottom:4 }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:12 }}>
+          <span className="mc-eb">Routine · 오늘 루틴</span>
+          <span style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{doneCount} / {routines.length}</span>
         </div>
-        <div style={{ height:8, background:"#e8e8e8", borderRadius:4, overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${pct}%`, background:"#1D9E75", borderRadius:4, transition:"width 0.4s" }} />
+        <div style={{ height:2, background:"#e6e6e8", overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${pct}%`, background:"#111", transition:"width 0.4s" }} />
         </div>
       </div>
 
-      <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+      <div style={{ display:"flex", flexDirection:"column", borderTop:"1px solid #dcdcde", marginTop:14 }}>
         {routines.map((r, i) => (
-          <div key={r.id} style={{ borderRadius:16, overflow:"hidden", border:`1.5px solid ${r.done && r.photoUrl ? "#1D9E75" : "#e8e8e8"}` }}>
-            <div style={{ background: r.done ? "#f7f8fa" : "#fff", padding:"0.875rem 1.25rem", display:"flex", alignItems:"center", gap:12 }}>
-              <div style={{ width:44, height:44, borderRadius:12, background:COLORS[i%COLORS.length], display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{r.icon}</div>
+          <div key={r.id} style={{ borderBottom:"1px solid #ececec" }}>
+            <div style={{ background:"#fff", padding:"18px 6px", display:"flex", alignItems:"center", gap:12 }}>
+              <div style={{ width:28, flexShrink:0, fontFamily:"var(--mc-mono)", fontSize:12, color:"#b0b0b5", letterSpacing:".04em" }}>{String(i+1).padStart(2,"0")}</div>
               <div style={{ flex:1 }}>
-                <div style={{ fontWeight:600, fontSize:15 }}>{r.name}</div>
-                <div style={{ fontSize:12, color:"#888", marginTop:2, display:"flex", gap:6 }}>
-                  ⏱ {r.duration}분
-                  {r.done && !r.photoUrl && <span style={{ color:"#f59e0b" }}>· 사진 미제출</span>}
-                  {r.photoUrl && <span style={{ color:"#1D9E75" }}>· 📸 인증완료</span>}
+                <div style={{ fontWeight:500, fontSize:15.5, color: r.done ? "#9a9aa0" : "#2b2b2e", textDecoration: r.done ? "line-through" : "none", textDecorationColor:"#c4c4c8" }}>{r.name}</div>
+                <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".04em", color:"#9a9aa0", marginTop:5, display:"flex", gap:8 }}>
+                  {r.duration}분
+                  {r.done && !r.photoUrl && <span style={{ color:"#a8463a" }}>· 사진 미제출</span>}
+                  {r.photoUrl && <span style={{ color:"#111" }}>· 인증 완료</span>}
                 </div>
               </div>
               {r.done && !r.photoUrl && (
-                <button onClick={() => setPhotoModal(r)} style={{ background:"#fff7ed", border:"1px solid #fed7aa", borderRadius:8, padding:"6px 10px", fontSize:13, color:"#c2410c", cursor:"pointer", flexShrink:0 }}>📷 인증</button>
+                <button onClick={() => setPhotoModal(r)} style={{ background:"#fff", border:"1px solid #dcdcde", borderRadius:8, padding:"7px 12px", fontSize:13, fontWeight:600, color:"#2b2b2e", cursor:"pointer", flexShrink:0 }}>사진 인증</button>
               )}
-              <button onClick={() => toggleRoutine(r)} style={{ width:30, height:30, borderRadius:"50%", border:"none", background: r.done ? "#1D9E75" : "transparent", outline: r.done ? "none" : "1.5px solid #ccc", color:"#fff", fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              <button onClick={() => toggleRoutine(r)} aria-label="완료" style={{ width:28, height:28, borderRadius:6, border:"none", background: r.done ? "#111" : "transparent", outline: r.done ? "none" : "1px solid #c4c4c8", color:"#fff", fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                 {r.done ? "✓" : ""}
               </button>
             </div>
-            {r.photoUrl && <img src={r.photoUrl} alt="인증" style={{ width:"100%", maxHeight:180, objectFit:"cover", display:"block" }} />}
+            {r.photoUrl && <img src={r.photoUrl} alt="인증" style={{ width:"100%", maxHeight:200, objectFit:"cover", display:"block", marginBottom:16 }} />}
           </div>
         ))}
       </div>
@@ -761,30 +752,26 @@ function Leaderboard({ challenge }) {
   }, [challenge.id, today]);
 
   if (loading) return <Spinner />;
-  const medals = ["🥇","🥈","🥉"];
   const routines = getRoutinesForChallenge(challenge.name);
 
   return (
     <div>
       <div style={{ marginBottom:16 }}>
-        <div style={{ fontWeight:700, fontSize:16, marginBottom:4 }}>리더보드</div>
-        <div style={{ fontSize:13, color:"#888" }}>전체 기간 달성률 기준</div>
+        <div className="mc-eb">Ranking · 순위</div>
+        <div style={{ fontSize:13, color:"#8a8a90", marginTop:8 }}>전체 기간 달성률 기준</div>
       </div>
-      {members.length === 0 && <div style={{ textAlign:"center", color:"#bbb", padding:"2rem" }}>아직 기록이 없어요 🌅</div>}
+      {members.length === 0 && <div style={{ color:"#9a9aa0", padding:"2rem 0", fontSize:14 }}>아직 기록 없음</div>}
       {members.map((m, i) => (
-        <div key={m.id} style={{ background: i===0 ? "#FAEEDA" : "#fff", border:`0.5px solid ${i===0 ? "#FAC775" : "#e8e8e8"}`, borderRadius:16, padding:"1rem 1.25rem", marginBottom:12 }}>
+        <div key={m.id} style={{ background:"#fff", borderTop: i===0 ? "1px solid #dcdcde" : "none", borderBottom:"1px solid #ececec", padding:"18px 6px" }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <div style={{ fontSize:24, width:30, textAlign:"center" }}>{medals[i] || `${i+1}`}</div>
+            <div style={{ width:28, fontFamily:"var(--mc-mono)", fontSize:12, color: i<3 ? "#111" : "#b0b0b5" }}>{String(i+1).padStart(2,"0")}</div>
             <div style={{ flex:1 }}>
-              <div style={{ fontWeight:600, fontSize:15 }}>{m.nickname || "참가자"} {m.role==="leader" ? "⭐" : ""}</div>
+              <div style={{ fontWeight:500, fontSize:15.5, color:"#2b2b2e" }}>{m.nickname || "참가자"}{m.role==="leader" ? " · 리더" : ""}</div>
               <div style={{ display:"flex", gap:8, marginTop:4, flexWrap:"wrap" }}>
-                <span style={{ fontSize:12, color:"#888" }}>🔥 {m.streak}일</span>
-                <span style={{ fontSize:12, color:"#888" }}>📅 {m.totalDays}/21일</span>
-                <span style={{ fontSize:12, color:"#1D9E75" }}>오늘 {m.todayPct}%</span>
-                <span style={{ fontSize:12, color:"#888" }}>📸 {m.todayPhotos.length}/{routines.length}</span>
+                <span style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, color:"#9a9aa0" }}>연속 {m.streak}일 · {m.totalDays}/21일 · 오늘 {m.todayPct}% · 사진 {m.todayPhotos.length}/{routines.length}</span>
               </div>
             </div>
-            <div style={{ fontSize:22, fontWeight:700, color: i===0 ? "#633806" : "#1D9E75" }}>{m.totalPct}%</div>
+            <div style={{ fontSize:20, fontWeight:400, color:"#111" }}>{m.totalPct}%</div>
           </div>
           {m.todayPhotos.length > 0 && (
             <div style={{ display:"flex", gap:6, marginTop:10, overflowX:"auto", paddingBottom:4 }}>
@@ -800,7 +787,7 @@ function Leaderboard({ challenge }) {
 }
 
 // ── 챌린지 정보 ──────────────────────────────────────────────────────────────
-function ChallengeInfo({ challenge, userId, onLeave }) {
+function ChallengeInfo({ challenge, onLeave }) {
   const [copied, setCopied] = useState(false);
   const inviteUrl = `${window.location.origin}?code=${challenge.invite_code}`;
   const copyLink = () => {
@@ -808,32 +795,22 @@ function ChallengeInfo({ challenge, userId, onLeave }) {
   };
   return (
     <div>
-      <div style={{ background:"#f7f8fa", borderRadius:16, padding:"1.25rem", marginBottom:12 }}>
-        <div style={{ fontWeight:700, fontSize:15, marginBottom:8 }}>{challenge.name}</div>
-        <div style={{ display:"flex", gap:20 }}>
-          <div style={{ textAlign:"center" }}>
-            <div style={{ fontWeight:700, fontSize:22, color:"#1D9E75" }}>21</div>
-            <div style={{ fontSize:12, color:"#888" }}>총 기간</div>
-          </div>
-          <div style={{ textAlign:"center" }}>
-            <div style={{ fontWeight:700, fontSize:22, color:"#1D9E75" }}>{daysSince(challenge.start_date)}</div>
-            <div style={{ fontSize:12, color:"#888" }}>진행일</div>
-          </div>
-        </div>
+      <div className="mc-eb">Info · 정보</div>
+      <div className="mc-rows" style={{ marginTop:14 }}>
+        <div className="mc-r" style={{ display:"flex", justifyContent:"space-between", padding:"18px 6px", fontSize:15 }}><span style={{ color:"#55555a" }}>총 기간</span><span style={{ fontFamily:"var(--mc-mono)", color:"#111" }}>21일</span></div>
+        <div className="mc-r" style={{ display:"flex", justifyContent:"space-between", padding:"18px 6px", fontSize:15 }}><span style={{ color:"#55555a" }}>진행일</span><span style={{ fontFamily:"var(--mc-mono)", color:"#111" }}>{daysSince(challenge.start_date)}일째</span></div>
       </div>
-      <div style={{ background:"#fff", border:"0.5px solid #e8e8e8", borderRadius:16, padding:"1.25rem", marginBottom:12 }}>
-        <div style={{ fontWeight:600, marginBottom:10 }}>👥 친구 초대</div>
-        <div style={{ background:"#f7f8fa", borderRadius:10, padding:"12px 16px", marginBottom:10, textAlign:"center" }}>
-          <div style={{ fontSize:12, color:"#888", marginBottom:6 }}>초대 코드</div>
-          <div style={{ fontSize:24, fontWeight:700, letterSpacing:4, color:"#1D9E75" }}>{challenge.invite_code}</div>
+      <div className="mc-sec">
+        <div className="mc-eb">Invite · 친구 초대</div>
+        <div style={{ marginTop:14, padding:"22px 0", borderTop:"1px solid #dcdcde", borderBottom:"1px solid #ececec" }}>
+          <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".1em", color:"#8d8d8d" }}>CODE</div>
+          <div style={{ fontFamily:"var(--mc-mono)", fontSize:26, letterSpacing:6, color:"#111", marginTop:8 }}>{challenge.invite_code || "—"}</div>
         </div>
-        <button onClick={copyLink} style={{ width:"100%", padding:"11px", borderRadius:10, border:"none", background:"#1D9E75", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>
-          {copied ? "✓ 링크 복사됨!" : "🔗 초대 링크 복사"}
-        </button>
+        <button className="mc-go" onClick={copyLink} style={{ width:"100%", marginTop:18 }}>{copied ? "링크 복사됨" : "초대 링크 복사"}</button>
       </div>
-      <button onClick={onLeave} style={{ width:"100%", padding:"11px", borderRadius:10, border:"none", background:"#fee2e2", color:"#991b1b", fontWeight:500, fontSize:15, cursor:"pointer" }}>
-        챌린지 나가기
-      </button>
+      <div style={{ marginTop:40, textAlign:"center" }}>
+        <button className="mc-link" onClick={onLeave} style={{ color:"#a8463a" }}>챌린지 나가기</button>
+      </div>
     </div>
   );
 }
@@ -847,28 +824,26 @@ function ChallengeDetail({ challenge, userId, userRole, onBack }) {
     onBack();
     window.location.reload();
   };
-  const tabs = [{ key:"home", label:"루틴", icon:"🏠" }, { key:"board", label:"순위", icon:"🏆" }, { key:"info", label:"정보", icon:"⚙️" }];
+  const tabs = [{ key:"home", label:"루틴" }, { key:"board", label:"순위" }, { key:"info", label:"정보" }];
 
   return (
-    <div style={{ minHeight:"100vh", background:"#f7f8fa" }}>
-      <div style={{ maxWidth:420, margin:"0 auto", background:"#fff", minHeight:"100vh", display:"flex", flexDirection:"column" }}>
-        <div style={{ padding:"1.25rem 1.25rem 0", display:"flex", alignItems:"center", gap:12 }}>
-          <button onClick={onBack} style={{ background:"none", border:"none", fontSize:22, cursor:"pointer" }}>←</button>
-          <div style={{ flex:1 }}>
-            <div style={{ fontWeight:700, fontSize:15 }}>{challenge.name}</div>
-            <div style={{ fontSize:12, color:"#888" }}>{daysSince(challenge.start_date)}일째 {userRole === "leader" ? "⭐ 리더" : ""}</div>
+    <div style={{ minHeight:"100vh", background:"#fff" }}>
+      <div style={{ maxWidth:720, margin:"0 auto", background:"#fff", minHeight:"100vh", display:"flex", flexDirection:"column" }}>
+        <div style={{ padding:"1.5rem 22px 0", display:"flex", alignItems:"center", gap:14 }}>
+          <button onClick={onBack} aria-label="뒤로" style={{ width:40, height:40, flexShrink:0, border:"1px solid #dcdcde", borderRadius:10, background:"#fff", cursor:"pointer", fontSize:16, color:"#111" }}>‹</button>
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontWeight:500, fontSize:18, color:"#111", letterSpacing:"-.01em" }}>{challenge.name.replace(/^\d+\s*/, "")}</div>
+            <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".06em", color:"#9a9aa0", marginTop:3 }}>{daysSince(challenge.start_date)}일째 / 21일{userRole === "leader" ? " · 리더" : ""}</div>
           </div>
         </div>
-        <div style={{ flex:1, overflowY:"auto", padding:"1rem 1.25rem 5rem" }}>
+        <div style={{ flex:1, overflowY:"auto", padding:"1.5rem 22px 6rem" }}>
           {tab === "home" && <ChallengeHome challenge={challenge} userId={userId} />}
           {tab === "board" && <Leaderboard challenge={challenge} />}
-          {tab === "info" && <ChallengeInfo challenge={challenge} userId={userId} onLeave={handleLeave} />}
+          {tab === "info" && <ChallengeInfo challenge={challenge} onLeave={handleLeave} />}
         </div>
-        <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:420, background:"#fff", borderTop:"0.5px solid #e8e8e8", display:"flex", justifyContent:"space-around", padding:"10px 0 16px" }}>
+        <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:720, background:"rgba(255,255,255,.96)", borderTop:"1px solid #dcdcde", display:"flex", justifyContent:"space-around", padding:"0 0 calc(10px + env(safe-area-inset-bottom))" }}>
           {tabs.map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:4, color: tab===t.key ? "#1D9E75" : "#bbb", fontWeight: tab===t.key ? 700 : 400, fontSize:11 }}>
-              <span style={{ fontSize:24 }}>{t.icon}</span>{t.label}
-            </button>
+            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", padding:"8px 18px", color: tab===t.key ? "#111" : "#9a9aa0", fontWeight: tab===t.key ? 700 : 500, fontSize:14, borderTop: tab===t.key ? "2px solid #111" : "2px solid transparent" }}>{t.label}</button>
           ))}
         </div>
       </div>
@@ -933,126 +908,100 @@ function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
   if (showAdmin && isAdmin) return <AdminPanel userId={userId} onBack={() => { setShowAdmin(false); load(); }} />;
   if (showLeader) return <LeaderPanel userId={userId} challenges={allChallenges} onBack={() => setShowLeader(false)} />;
 
+  const Arrow = () => (<svg className="mc-ar" viewBox="0 0 24 24" fill="none"><path d="M9.5 5.5L16 12l-6.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+  const shortName = n => n.replace(/^\d+\s*/, "");
+
   return (
-    <div style={{ minHeight:"100vh", background:"#f7f8fa", padding:"1.5rem 1rem 2rem" }}>
-      <div style={{ maxWidth:420, margin:"0 auto" }}>
-        <div style={{ display:"flex", alignItems:"center", marginBottom:20 }}>
-          <div style={{ flex:1 }}>
-            <div style={{ fontSize:22, fontWeight:700 }}>🌿 미라클 아로마</div>
-            <div style={{ fontSize:13, color:"#888", marginTop:2 }}>21일 챌린지 인증</div>
-          </div>
-          <div style={{ display:"flex", gap:8 }}>
-            {isLeader && (
-              <button onClick={() => setShowLeader(true)} style={{ padding:"8px 12px", borderRadius:10, border:"none", background:"#EEEDFE", color:"#534AB7", fontWeight:600, fontSize:13, cursor:"pointer" }}>⭐ 리더</button>
-            )}
-            {isAdmin && (
-              <button onClick={() => setShowAdmin(true)} style={{ padding:"8px 12px", borderRadius:10, border:"none", background:"#FAEEDA", color:"#633806", fontWeight:600, fontSize:13, cursor:"pointer" }}>👑 관리</button>
-            )}
-          </div>
-        </div>
+    <div className="mc">
+      <nav className="mc-nav">
+        {isLeader && <button onClick={() => setShowLeader(true)}>리더</button>}
+        {isAdmin && <button onClick={() => setShowAdmin(true)}>관리</button>}
+        {guest
+          ? <button className="dk" onClick={onNeedLogin}>로그인</button>
+          : <button onClick={() => supabase.auth.signOut()}>로그아웃</button>}
+      </nav>
 
-        <button onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)} style={{ width:"100%", padding:"13px", borderRadius:14, border:"none", background:"#1D9E75", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer", marginBottom:20 }}>
-          + 코드로 챌린지 참가하기
-        </button>
+      <div className="mc-eb" style={{ marginTop:18 }}>Miracle Challenge</div>
+      <h1 className="mc-h">21일 챌린지</h1>
+      <p className="mc-lead">하루 루틴 · 사진 인증 · 21일</p>
 
+      <div className="mc-top">
+        {!showCodeInput && (
+          <button className="mc-go" onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)}>코드로 참가하기</button>
+        )}
         {showCodeInput && (
-          <div style={{ background:"#fff", borderRadius:16, padding:"1.25rem", marginBottom:20, border:"1.5px solid #1D9E75" }}>
-            <div style={{ fontWeight:700, marginBottom:12 }}>챌린지 코드 입력</div>
-            {codeError && <div style={{ color:"#dc2626", fontSize:13, marginBottom:8 }}>{codeError}</div>}
-            <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="코드 입력 (예: AB12CD34)"
-              style={{ width:"100%", padding:"11px 14px", borderRadius:10, border:"1px solid #ddd", fontSize:16, letterSpacing:3, textAlign:"center", marginBottom:10, boxSizing:"border-box" }} />
-            <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="닉네임 (선택)"
-              style={{ width:"100%", padding:"11px 14px", borderRadius:10, border:"1px solid #ddd", fontSize:15, marginBottom:12, boxSizing:"border-box" }} />
-            <div style={{ display:"flex", gap:8 }}>
-              <button onClick={joinWithCode} disabled={codeLoading}
-                style={{ flex:1, padding:"11px", borderRadius:10, border:"none", background:"#1D9E75", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>
-                {codeLoading ? "확인 중..." : "참가하기"}
-              </button>
-              <button onClick={() => { setShowCodeInput(false); setCodeError(""); }}
-                style={{ flex:1, padding:"11px", borderRadius:10, border:"1px solid #ddd", background:"transparent", fontWeight:500, fontSize:15, cursor:"pointer" }}>취소</button>
+          <div className="mc-form">
+            {codeError && <p className="mc-err">{codeError}</p>}
+            <label className="mc-fld"><span>Code</span>
+              <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="예: AB12CD34" style={{ letterSpacing:3 }} /></label>
+            <label className="mc-fld"><span>Nickname</span>
+              <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="닉네임 (선택)" /></label>
+            <div className="mc-btns">
+              <button className="mc-go" onClick={joinWithCode} disabled={codeLoading}>{codeLoading ? "확인 중..." : "참가하기"}</button>
+              <button className="mc-sub" onClick={() => { setShowCodeInput(false); setCodeError(""); }}>취소</button>
             </div>
           </div>
         )}
+      </div>
 
-        {/* 내 챌린지 */}
-        {myChallenges.length > 0 && (
-          <div>
-            <div style={{ fontWeight:700, marginBottom:10, fontSize:15 }}>내 챌린지</div>
-            <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
-              {myChallenges.map(c => {
-                const elapsed = daysSince(c.start_date);
-                const pct = Math.min(100, Math.round((elapsed / 21) * 100));
-                const active = isActive(c);
-                return (
-                  <div key={c.id} style={{ background:"#fff", border:`1.5px solid ${active ? "#1D9E75" : "#e8e8e8"}`, borderRadius:16, padding:"1.25rem", position:"relative" }}>
-                    <div onClick={() => active && onSelect(c, c.myRole)} style={{ cursor: active ? "pointer" : "default", opacity: active ? 1 : 0.6 }}>
-                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-                        <div style={{ flex:1, paddingRight:8 }}>
-                          <div style={{ fontWeight:700, fontSize:14 }}>{c.name}</div>
-                          <div style={{ fontSize:12, color:"#888", marginTop:2 }}>{elapsed}일째 / 21일 {c.myRole === "leader" ? "· ⭐ 리더" : ""}</div>
-                        </div>
-                        <div style={{ padding:"4px 10px", borderRadius:20, background: active ? "#E1F5EE" : "#f0f0f0", color: active ? "#0F6E56" : "#888", fontSize:12, fontWeight:600 }}>
-                          {active ? `${pct}%` : "🔒 종료"}
-                        </div>
-                      </div>
-                      <div style={{ height:5, background:"#f0f0f0", borderRadius:3, marginTop:10, overflow:"hidden" }}>
-                        <div style={{ height:"100%", width:`${pct}%`, background:"#1D9E75", borderRadius:3 }} />
-                      </div>
-                    </div>
-                    <button onClick={async (e) => {
+      {myChallenges.length > 0 && (
+        <div className="mc-sec">
+          <div className="mc-eb">My Challenge · 내 챌린지</div>
+          <div className="mc-rows">
+            {myChallenges.map(c => {
+              const elapsed = daysSince(c.start_date);
+              const pct = Math.min(100, Math.round((elapsed / 21) * 100));
+              const active = isActive(c);
+              return (
+                <div key={c.id} className="mc-r">
+                  <div style={{ display:"flex", alignItems:"center" }}>
+                    <button className="mc-rh" onClick={() => active && onSelect(c, c.myRole)} style={{ cursor: active ? "pointer" : "default" }}>
+                      <span className="mc-nm"><b>{shortName(c.name)}</b>
+                        <small>{elapsed}일째 / 21일{c.myRole === "leader" ? " · 리더" : ""}</small>
+                        <span className="mc-bar"><i style={{ width:`${pct}%` }} /></span></span>
+                      <span className={"mc-st" + (active ? " on" : "")}>{active ? `${pct}%` : "종료"}</span>
+                      {active && <Arrow />}
+                    </button>
+                    <button className="mc-x" aria-label="목록에서 지우기" onClick={async (e) => {
                       e.stopPropagation();
                       if (!window.confirm("챌린지 목록에서 삭제할까요?")) return;
                       await supabase.from("challenge_members").delete().eq("challenge_id", c.id).eq("user_id", userId);
                       load();
-                    }} style={{ position:"absolute", top:10, right:10, background:"none", border:"none", color:"#ccc", fontSize:18, cursor:"pointer", lineHeight:1, padding:"4px" }}>✕</button>
+                    }}>✕</button>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* 전체 챌린지 목록 */}
-        <div style={{ fontWeight:700, marginBottom:10, fontSize:15 }}>전체 챌린지 프로그램</div>
-        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+      <div className="mc-sec">
+        <div className="mc-eb">Programs · 전체 챌린지</div>
+        <div className="mc-rows">
           {ALL_CHALLENGES.map((c, i) => {
             const opened = allChallenges.find(ac => ac.name === c.name);
             const active = opened && isActive(opened);
             const joined = myChallenges.find(mc => mc.name === c.name);
+            const isOpen = openName === c.name;
             return (
-              <div key={c.name} style={{ background:"#fff", border:`0.5px solid ${openName===c.name ? "#1D9E75" : "#e8e8e8"}`, borderRadius:14, overflow:"hidden" }}>
-                <div onClick={() => setOpenName(openName===c.name ? "" : c.name)} style={{ padding:"0.875rem 1.25rem", display:"flex", alignItems:"center", gap:12, cursor:"pointer" }}>
-                  <div style={{ fontSize:24 }}>{c.icon}</div>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontWeight:600, fontSize:13 }}>{c.name}</div>
-                    <div style={{ fontSize:11, color:"#888", marginTop:2 }}>
-                      {active ? "🟢 진행 중" : opened ? "종료됨" : "다음 기수 준비 중"}
-                      {joined ? " · ✓ 참가중" : ""} · 루틴 {c.routines.length}개
-                    </div>
-                  </div>
-                  <div style={{ fontSize:14, color:"#bbb" }}>{openName===c.name ? "▲" : "▼"}</div>
-                </div>
-                {openName===c.name && (
-                  <div style={{ borderTop:"0.5px solid #eee", padding:"0.5rem 1.25rem 0.875rem", background:"#fafbfa" }}>
-                    {c.routines.map((r, j) => (
-                      <div key={r.id} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0" }}>
-                        <div style={{ width:34, height:34, borderRadius:10, background:COLORS[j%COLORS.length], display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{r.icon}</div>
-                        <div style={{ flex:1, fontSize:14, fontWeight:500 }}>{r.name}</div>
-                        <div style={{ fontSize:12, color:"#888" }}>⏱ {r.duration}분</div>
-                      </div>
-                    ))}
-                    <div style={{ fontSize:12, color:"#888", marginTop:6 }}>21일 동안 매일 · 사진 인증</div>
+              <div key={c.name} className={"mc-r" + (isOpen ? " open" : "")}>
+                <button className="mc-rh" onClick={() => setOpenName(isOpen ? "" : c.name)}>
+                  <span className="mc-no">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="mc-nm"><b>{shortName(c.name)}</b>
+                    <small>루틴 {c.routines.length}개{joined ? " · 참가중" : ""}</small></span>
+                  <span className={"mc-st" + (active ? " on" : "")}>{active ? "진행 중" : opened ? "종료" : "준비 중"}</span>
+                  <Arrow />
+                </button>
+                {isOpen && (
+                  <div className="mc-rt">
+                    <ul>{c.routines.map(r => (<li key={r.id}><span>{r.name}</span><em>{r.duration}분</em></li>))}</ul>
+                    <p>21일 · 매일 · 사진 인증</p>
                   </div>
                 )}
               </div>
             );
           })}
-        </div>
-
-        <div style={{ textAlign:"center", marginTop:20 }}>
-          {guest
-            ? <button onClick={onNeedLogin} style={{ background:"none", border:"none", color:"#1D9E75", fontSize:13, cursor:"pointer" }}>로그인 · 회원가입</button>
-            : <button onClick={() => supabase.auth.signOut()} style={{ background:"none", border:"none", color:"#bbb", fontSize:13, cursor:"pointer" }}>로그아웃</button>}
         </div>
       </div>
     </div>
