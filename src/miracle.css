@@ -17,7 +17,8 @@ button,input{font-family:inherit}
 .mc-nav .mk i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mc-y2);margin-right:8px;vertical-align:1px}
 .mc-nav button{font-family:var(--mc-mono);font-size:12.5px;letter-spacing:.02em;color:#9a9aa0;background:none;border:0;cursor:pointer;padding:6px 0}
 .mc-nav button:hover{color:#111}
-.mc-nav button.dk{background:#111;color:#fff;font-weight:600;padding:9px 14px;border-radius:10px;letter-spacing:.04em}
+.mc-nav button.dk{background:#fff;color:#2b2b2e;font-weight:600;padding:8px 14px;border:1px solid var(--mc-rule);border-radius:10px;letter-spacing:.04em}
+.mc-nav button.dk:hover{border-color:#111}
 .mc-eb{font-family:var(--mc-mono);font-size:12px;letter-spacing:.14em;color:#8d8d8d;text-transform:uppercase}
 .mc-h{margin:10px 0 0;font-size:clamp(26px,4.4vw,34px);font-weight:400;letter-spacing:-.015em;line-height:1.18;color:#111}
 .mc-lead{margin:12px 0 0;font-size:14.5px;line-height:1.65;color:#6a6a6e}
@@ -26,20 +27,20 @@ button,input{font-family:inherit}
 .mc-sech span{font-family:var(--mc-mono);font-size:11.5px;color:#9a9aa0;letter-spacing:.04em}
 
 /* 첫 띠 — 연노랑 */
-.mc-hero{position:relative;margin-top:18px;padding:30px 28px 26px;background:var(--mc-ysoft);border:1px solid var(--mc-yline);border-radius:8px;overflow:hidden}
-.mc-hero::after{content:"21";position:absolute;right:-6px;bottom:-34px;font-size:150px;font-weight:200;letter-spacing:-.06em;color:rgba(230,194,90,.22);line-height:1;pointer-events:none}
-.mc-hero .mc-eb{color:#8b7426}
-.mc-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:24px;border-top:1px solid var(--mc-yline)}
-.mc-stats div{padding:14px 0 0}
-.mc-stats div+div{padding-left:16px;border-left:1px solid var(--mc-yline)}
+.mc-hero{position:relative;margin-top:26px;padding:0}
+.mc-hero .mc-eb{color:#8d8d8d}
+.mc-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:26px;border-top:1px solid var(--mc-rule);border-bottom:1px solid var(--mc-line)}
+.mc-stats div{padding:16px 0 16px}
+.mc-stats div+div{padding-left:18px;border-left:1px solid var(--mc-line)}
 .mc-stats b{display:block;font-size:24px;font-weight:400;color:#111;letter-spacing:-.02em}
-.mc-stats span{display:block;margin-top:4px;font-family:var(--mc-mono);font-size:11px;letter-spacing:.08em;color:#8b7426}
-.mc-hero .mc-act{position:relative;z-index:1;margin-top:22px}
+.mc-stats span{display:block;margin-top:5px;font-family:var(--mc-mono);font-size:11px;letter-spacing:.08em;color:#9a9aa0}
+.mc-stats div.y b{color:#111;position:relative}
+.mc-stats div.y b::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mc-y2);margin-left:8px;vertical-align:5px}
+.mc-hero .mc-act{margin-top:22px}
 
-.mc-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#111;color:#fff;font-weight:600;font-size:14.5px;letter-spacing:.02em;padding:14px 22px;border-radius:10px;border:0;cursor:pointer;text-decoration:none}
-.mc-go:hover{background:#2b2b2e}
+.mc-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--mc-y);color:var(--mc-yink);font-weight:700;font-size:14.5px;letter-spacing:.01em;padding:14px 22px;border-radius:10px;border:1px solid #F2D27A;cursor:pointer;text-decoration:none;transition:background .15s ease}
+.mc-go:hover{background:#F7D77F}
 .mc-go:disabled{opacity:.5;cursor:default}
-.mc-go .y{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mc-y)}
 .mc-sub{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#2b2b2e;font-weight:600;font-size:14.5px;padding:13px 20px;border-radius:10px;border:1px solid var(--mc-rule);cursor:pointer}
 .mc-sub:hover{background:#fafafa}
 .mc-link{background:none;border:0;cursor:pointer;font-family:var(--mc-mono);font-size:12.5px;letter-spacing:.02em;color:#9a9aa0;padding:6px 0}
@@ -87,7 +88,7 @@ button,input{font-family:inherit}
 .mc-rt p{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
 
 /* 입력 — 밑줄만 */
-.mc-form{margin-top:18px;padding:22px 20px 18px;background:#fff;border:1px solid var(--mc-yline);border-radius:8px}
+.mc-form{margin-top:18px;padding:22px 20px 18px;background:#fff;border:1px solid var(--mc-line);border-radius:8px}
 .mc-fld{display:block;margin-bottom:16px}
 .mc-fld span{display:block;font-family:var(--mc-mono);font-size:11.5px;letter-spacing:.1em;color:#8d8d8d;text-transform:uppercase}
 .mc-fld input{width:100%;border:0;border-bottom:1px solid var(--mc-rule);border-radius:0;outline:0;background:none;font-size:16px;color:#111;padding:12px 2px}
@@ -98,20 +99,18 @@ button,input{font-family:inherit}
 
 /* 로그인 */
 .mc-login{max-width:440px;margin:0 auto;padding:clamp(28px,8vh,90px) 22px 80px}
-.mc-login .mc-hero{margin-top:0}
+.mc-login .mc-hero{margin-top:0;padding-bottom:6px}
 .mc-login .mc-form{border-color:var(--mc-line);margin-top:12px}
 .mc-login .mc-go{width:100%;margin-top:10px}
 .mc-login .mc-alt{display:flex;justify-content:space-between;gap:12px;margin-top:16px}
 
 /* 참가자 화면 */
 .mc-card2{padding:20px 20px 18px;background:#fff;border:1px solid var(--mc-line);border-radius:8px;margin-bottom:12px}
-.mc-card2.y{background:var(--mc-ysoft);border-color:var(--mc-yline)}
-.mc-card2.y .mc-eb{color:#8b7426}
+.mc-card2.y{background:#fff}
 
 @media (max-width:600px){
   .mc{padding:16px 18px 60px}
-  .mc-hero{padding:24px 20px 22px}
-  .mc-hero::after{font-size:120px;bottom:-28px}
+  .mc-hero{margin-top:20px}
   .mc-hero .mc-act .mc-go{width:100%}
   .mc-grid{grid-template-columns:minmax(0,1fr)}
   .mc-rt{padding-left:18px}

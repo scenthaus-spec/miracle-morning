@@ -172,10 +172,10 @@ function PhotoModal({ routine, userId, challengeId, today, onClose, onUploaded }
         <div style={{ fontSize:14, color:"#888", marginBottom:20 }}>{done ? "인증 완료! 🎉" : "인증 사진을 올려주세요 📸"}</div>
         {preview && <img src={preview} alt="미리보기" style={{ width:"100%", borderRadius:4, marginBottom:16, maxHeight:220, objectFit:"cover" }} />}
         {done ? (
-          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"none", background:"#111", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
+          <button onClick={onClose} style={{ width:"100%", padding:"13px", borderRadius:12, border:"1px solid #F2D27A", background:"#FADF96", color:"#4A3B00", fontWeight:700, fontSize:16, cursor:"pointer" }}>✓ 확인</button>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#111", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer" }}>
+            <label style={{ display:"block", padding:"13px", borderRadius:12, background:"#FADF96", color:"#4A3B00", fontWeight:600, fontSize:15, cursor:"pointer" }}>
               <input type="file" accept="image/*" capture="environment" style={{ display:"none" }} onChange={handleFile} />
               {uploading ? "업로드 중..." : "📷 지금 사진 찍기"}
             </label>
@@ -376,7 +376,7 @@ function AdminPanel({ userId, onBack }) {
                       </div>
                     </div>
                     <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
-                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#111", borderRadius:3 }} />
+                      <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#E6C25A", borderRadius:3 }} />
                     </div>
                     <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일 완료</div>
                     {m.todayPhotos.length > 0 && (
@@ -395,7 +395,7 @@ function AdminPanel({ userId, onBack }) {
             {tab === "codes" && (
               <div>
                 <button onClick={() => generateCode(selectedChallenge.id)}
-                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"none", background:"#111", color:"#fff", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
+                  style={{ width:"100%", padding:"12px", borderRadius:12, border:"1px solid #F2D27A", background:"#FADF96", color:"#4A3B00", fontWeight:600, fontSize:15, cursor:"pointer", marginBottom:16 }}>
                   + 새 초대 코드 생성
                 </button>
                 {codes.map(c => (
@@ -468,7 +468,7 @@ function AdminPanel({ userId, onBack }) {
               </div>
             </div>
             <button onClick={createChallenge} disabled={!selectedTemplate || creating}
-              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#111" : "#ccc", color:"#fff", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
+              style={{ width:"100%", padding:"12px", borderRadius:10, border:"none", background: selectedTemplate ? "#FADF96" : "#eee", color: selectedTemplate ? "#4A3B00" : "#999", fontWeight:600, fontSize:15, cursor: selectedTemplate ? "pointer" : "default" }}>
               {creating ? "생성 중..." : "챌린지 열기 🚀"}
             </button>
           </div>
@@ -543,7 +543,7 @@ function LeaderPanel({ userId, challenges, onBack }) {
                   }
                 </div>
                 <div style={{ height:6, background:"#e6e6e8", borderRadius:3, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#111", borderRadius:3 }} />
+                  <div style={{ height:"100%", width:`${Math.min(m.days/21*100,100)}%`, background:"#E6C25A", borderRadius:3 }} />
                 </div>
                 <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{m.days}/21일</div>
                 {m.todayPhotos.length > 0 && (
@@ -651,7 +651,7 @@ function ChallengeHome({ challenge, userId }) {
   return (
     <div>
       {celebration && (
-        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#111", color:"#fff", padding:"12px 28px", borderRadius:4, fontWeight:700, zIndex:300, fontSize:16 }}>
+        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", background:"#FADF96", color:"#4A3B00", padding:"12px 28px", borderRadius:4, fontWeight:700, zIndex:300, fontSize:16 }}>
           🎉 오늘의 루틴 완료!
         </div>
       )}
@@ -931,12 +931,12 @@ function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
         <p className="mc-lead">하루 루틴 · 사진 인증 · 함께 21일</p>
         <div className="mc-stats">
           <div><b>{ALL_CHALLENGES.length}</b><span>PROGRAMS</span></div>
-          <div><b>{liveCount}</b><span>진행 중</span></div>
+          <div className={liveCount ? "y" : ""}><b>{liveCount}</b><span>진행 중</span></div>
           <div><b>21</b><span>DAYS</span></div>
         </div>
         <div className="mc-act">
           {!showCodeInput && (
-            <button className="mc-go" onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)}><span className="y" />코드로 참가하기</button>
+            <button className="mc-go" onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)}>코드로 참가하기</button>
           )}
         </div>
       </section>
