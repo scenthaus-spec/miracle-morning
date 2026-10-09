@@ -193,7 +193,7 @@ function PhotoModal({ routine, userId, challengeId, today, onClose, onUploaded }
 }
 
 // ── 로그인 ───────────────────────────────────────────────────────────────────
-function LoginScreen() {
+function LoginScreen({ onBack }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -228,6 +228,11 @@ function LoginScreen() {
           style={{ background:"none", border:"none", color:"#1D9E75", cursor:"pointer", fontSize:14 }}>
           {isSignUp ? "이미 계정이 있어요 → 로그인" : "계정이 없어요 → 회원가입"}
         </button>
+        {onBack && (
+          <div style={{ marginTop:14 }}>
+            <button onClick={onBack} style={{ background:"none", border:"none", color:"#999", cursor:"pointer", fontSize:13 }}>← 로그인 없이 둘러보기</button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -872,7 +877,7 @@ function ChallengeDetail({ challenge, userId, userRole, onBack }) {
 }
 
 // ── 참가자 챌린지 목록 ────────────────────────────────────────────────────────
-function ChallengeList({ userId, userEmail, onSelect }) {
+function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
   const [myChallenges, setMyChallenges] = useState([]);
   const [allChallenges, setAllChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -883,24 +888,27 @@ function ChallengeList({ userId, userEmail, onSelect }) {
   const [codeLoading, setCodeLoading] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [showLeader, setShowLeader] = useState(false);
-  const isAdmin = userEmail === ADMIN_EMAIL;
+  const [openName, setOpenName] = useState("");
+  const isAdmin = !guest && userEmail === ADMIN_EMAIL;
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data: memberships } = await supabase.from("challenge_members").select("challenge_id, role, challenges(*)").eq("user_id", userId);
-    const myList = (memberships || []).map(m => ({ ...m.challenges, myRole: m.role })).filter(Boolean);
-    setMyChallenges(myList);
+    if (!guest) {
+      const { data: memberships } = await supabase.from("challenge_members").select("challenge_id, role, challenges(*)").eq("user_id", userId);
+      const myList = (memberships || []).map(m => ({ ...m.challenges, myRole: m.role })).filter(Boolean);
+      setMyChallenges(myList);
+    }
 
     const { data: all } = await supabase.from("challenges").select("*").order("start_date", { ascending: false });
     setAllChallenges(all || []);
     setLoading(false);
-  }, [userId]);
+  }, [userId, guest]);
 
   useEffect(() => { load(); }, [load]);
   useEffect(() => {
     const c = new URLSearchParams(window.location.search).get("code");
-    if (c) setShowCodeInput(true);
-  }, []);
+    if (c) { if (guest) onNeedLogin && onNeedLogin(); else setShowCodeInput(true); }
+  }, [guest]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const joinWithCode = async () => {
     if (!code.trim()) { setCodeError("코드를 입력해주세요"); return; }
@@ -943,7 +951,7 @@ function ChallengeList({ userId, userEmail, onSelect }) {
           </div>
         </div>
 
-        <button onClick={() => setShowCodeInput(true)} style={{ width:"100%", padding:"13px", borderRadius:14, border:"none", background:"#1D9E75", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer", marginBottom:20 }}>
+        <button onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)} style={{ width:"100%", padding:"13px", borderRadius:14, border:"none", background:"#1D9E75", color:"#fff", fontWeight:700, fontSize:16, cursor:"pointer", marginBottom:20 }}>
           + 코드로 챌린지 참가하기
         </button>
 
@@ -1012,23 +1020,39 @@ function ChallengeList({ userId, userEmail, onSelect }) {
             const active = opened && isActive(opened);
             const joined = myChallenges.find(mc => mc.name === c.name);
             return (
-              <div key={c.name} style={{ background:"#fff", border:"0.5px solid #e8e8e8", borderRadius:14, padding:"0.875rem 1.25rem", display:"flex", alignItems:"center", gap:12, opacity: active ? 1 : 0.5 }}>
-                <div style={{ fontSize:24 }}>{c.icon}</div>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontWeight:600, fontSize:13 }}>{c.name}</div>
-                  <div style={{ fontSize:11, color:"#888", marginTop:2 }}>
-                    {active ? "🟢 진행 중" : opened ? "🔒 종료됨" : "⏳ 준비 중"}
-                    {joined ? " · ✓ 참가중" : ""}
+              <div key={c.name} style={{ background:"#fff", border:`0.5px solid ${openName===c.name ? "#1D9E75" : "#e8e8e8"}`, borderRadius:14, overflow:"hidden" }}>
+                <div onClick={() => setOpenName(openName===c.name ? "" : c.name)} style={{ padding:"0.875rem 1.25rem", display:"flex", alignItems:"center", gap:12, cursor:"pointer" }}>
+                  <div style={{ fontSize:24 }}>{c.icon}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontWeight:600, fontSize:13 }}>{c.name}</div>
+                    <div style={{ fontSize:11, color:"#888", marginTop:2 }}>
+                      {active ? "🟢 진행 중" : opened ? "종료됨" : "다음 기수 준비 중"}
+                      {joined ? " · ✓ 참가중" : ""} · 루틴 {c.routines.length}개
+                    </div>
                   </div>
+                  <div style={{ fontSize:14, color:"#bbb" }}>{openName===c.name ? "▲" : "▼"}</div>
                 </div>
-                {!active && <div style={{ fontSize:20 }}>🔒</div>}
+                {openName===c.name && (
+                  <div style={{ borderTop:"0.5px solid #eee", padding:"0.5rem 1.25rem 0.875rem", background:"#fafbfa" }}>
+                    {c.routines.map((r, j) => (
+                      <div key={r.id} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0" }}>
+                        <div style={{ width:34, height:34, borderRadius:10, background:COLORS[j%COLORS.length], display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{r.icon}</div>
+                        <div style={{ flex:1, fontSize:14, fontWeight:500 }}>{r.name}</div>
+                        <div style={{ fontSize:12, color:"#888" }}>⏱ {r.duration}분</div>
+                      </div>
+                    ))}
+                    <div style={{ fontSize:12, color:"#888", marginTop:6 }}>21일 동안 매일 · 사진 인증</div>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
 
         <div style={{ textAlign:"center", marginTop:20 }}>
-          <button onClick={() => supabase.auth.signOut()} style={{ background:"none", border:"none", color:"#bbb", fontSize:13, cursor:"pointer" }}>로그아웃</button>
+          {guest
+            ? <button onClick={onNeedLogin} style={{ background:"none", border:"none", color:"#1D9E75", fontSize:13, cursor:"pointer" }}>로그인 · 회원가입</button>
+            : <button onClick={() => supabase.auth.signOut()} style={{ background:"none", border:"none", color:"#bbb", fontSize:13, cursor:"pointer" }}>로그아웃</button>}
         </div>
       </div>
     </div>
@@ -1041,6 +1065,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [userRole, setUserRole] = useState("member");
+  const [wantLogin, setWantLogin] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => { setSession(session); setLoading(false); });
@@ -1049,7 +1074,10 @@ export default function App() {
   }, []);
 
   if (loading) return <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center" }}><Spinner /></div>;
-  if (!session) return <LoginScreen />;
+  if (!session) {
+    if (wantLogin) return <LoginScreen onBack={() => setWantLogin(false)} />;
+    return <ChallengeList guest onNeedLogin={() => setWantLogin(true)} onSelect={() => {}} />;
+  }
   if (selectedChallenge) return (
     <ChallengeDetail
       challenge={selectedChallenge}
