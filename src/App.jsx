@@ -210,9 +210,11 @@ function LoginScreen({ onBack }) {
 
   return (
     <div className="mc-login">
-      <div className="mc-eb">Miracle Challenge</div>
-      <h1 className="mc-h">{isSignUp ? "회원가입" : "로그인"}</h1>
-      <p className="mc-lead">21일 챌린지 참가 · 매일 인증</p>
+      <section className="mc-hero">
+        <div className="mc-eb">Miracle Challenge</div>
+        <h1 className="mc-h">{isSignUp ? "회원가입" : "로그인"}</h1>
+        <p className="mc-lead">21일 챌린지 참가 · 매일 인증</p>
+      </section>
       <div className="mc-form">
         {error && <p className="mc-err">{error}</p>}
         <label className="mc-fld"><span>Email</span>
@@ -658,17 +660,17 @@ function ChallengeHome({ challenge, userId }) {
           onClose={() => setPhotoModal(null)} onUploaded={handlePhotoUploaded} />
       )}
 
-      <div style={{ padding:"4px 0 0", marginBottom:30 }}>
+      <div className="mc-card2 y">
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline" }}>
           <div className="mc-eb">Progress · 진행</div>
           <div style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{elapsed} / 21일 · {progress}%</div>
         </div>
-        <div style={{ height:2, background:"#e6e6e8", marginTop:12, overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${progress}%`, background:"#111", borderRadius:3 }} />
+        <div style={{ height:4, background:"rgba(230,194,90,.25)", marginTop:12, borderRadius:2, overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${progress}%`, background:"#E6C25A", borderRadius:2 }} />
         </div>
       </div>
 
-      <div style={{ padding:"0 0 22px", marginBottom:22, borderBottom:"1px solid #dcdcde" }}>
+      <div className="mc-card2">
         <div className="mc-eb">Today · 오늘</div>
         <div style={{ fontSize:22, fontWeight:400, color:"#111", marginTop:8, letterSpacing:"-.01em" }}>{formatDate()}</div>
         {checkinTime
@@ -677,13 +679,13 @@ function ChallengeHome({ challenge, userId }) {
         }
       </div>
 
-      <div style={{ marginBottom:4 }}>
+      <div style={{ marginTop:30, marginBottom:4 }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:12 }}>
           <span className="mc-eb">Routine · 오늘 루틴</span>
           <span style={{ fontFamily:"var(--mc-mono)", fontSize:12, color:"#111" }}>{doneCount} / {routines.length}</span>
         </div>
-        <div style={{ height:2, background:"#e6e6e8", overflow:"hidden" }}>
-          <div style={{ height:"100%", width:`${pct}%`, background:"#111", transition:"width 0.4s" }} />
+        <div style={{ height:4, background:"#F3F2EE", borderRadius:2, overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${pct}%`, background:"#E6C25A", borderRadius:2, transition:"width 0.4s" }} />
         </div>
       </div>
 
@@ -691,7 +693,7 @@ function ChallengeHome({ challenge, userId }) {
         {routines.map((r, i) => (
           <div key={r.id} style={{ borderBottom:"1px solid #ececec" }}>
             <div style={{ background:"#fff", padding:"18px 6px", display:"flex", alignItems:"center", gap:12 }}>
-              <div style={{ width:28, flexShrink:0, fontFamily:"var(--mc-mono)", fontSize:12, color:"#b0b0b5", letterSpacing:".04em" }}>{String(i+1).padStart(2,"0")}</div>
+              <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", background: r.done ? "#FFF8E1" : "#F6F5F1", color: r.done ? "#4A3B00" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12 }}>{String(i+1).padStart(2,"0")}</div>
               <div style={{ flex:1 }}>
                 <div style={{ fontWeight:500, fontSize:15.5, color: r.done ? "#9a9aa0" : "#2b2b2e", textDecoration: r.done ? "line-through" : "none", textDecorationColor:"#c4c4c8" }}>{r.name}</div>
                 <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".04em", color:"#9a9aa0", marginTop:5, display:"flex", gap:8 }}>
@@ -703,7 +705,7 @@ function ChallengeHome({ challenge, userId }) {
               {r.done && !r.photoUrl && (
                 <button onClick={() => setPhotoModal(r)} style={{ background:"#fff", border:"1px solid #dcdcde", borderRadius:8, padding:"7px 12px", fontSize:13, fontWeight:600, color:"#2b2b2e", cursor:"pointer", flexShrink:0 }}>사진 인증</button>
               )}
-              <button onClick={() => toggleRoutine(r)} aria-label="완료" style={{ width:28, height:28, borderRadius:6, border:"none", background: r.done ? "#111" : "transparent", outline: r.done ? "none" : "1px solid #c4c4c8", color:"#fff", fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              <button onClick={() => toggleRoutine(r)} aria-label="완료" style={{ width:28, height:28, borderRadius:6, border:"none", background: r.done ? "#FADF96" : "transparent", outline: r.done ? "none" : "1px solid #c4c4c8", color:"#4A3B00", fontWeight:800, fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                 {r.done ? "✓" : ""}
               </button>
             </div>
@@ -762,9 +764,9 @@ function Leaderboard({ challenge }) {
       </div>
       {members.length === 0 && <div style={{ color:"#9a9aa0", padding:"2rem 0", fontSize:14 }}>아직 기록 없음</div>}
       {members.map((m, i) => (
-        <div key={m.id} style={{ background:"#fff", borderTop: i===0 ? "1px solid #dcdcde" : "none", borderBottom:"1px solid #ececec", padding:"18px 6px" }}>
+        <div key={m.id} style={{ background: i===0 ? "#FFF8E1" : "#fff", border: i===0 ? "1px solid #F5E6B8" : "none", borderRadius: i===0 ? 8 : 0, borderBottom: i===0 ? "1px solid #F5E6B8" : "1px solid #ececec", padding: i===0 ? "18px 14px" : "18px 6px", marginBottom: i===0 ? 8 : 0 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <div style={{ width:28, fontFamily:"var(--mc-mono)", fontSize:12, color: i<3 ? "#111" : "#b0b0b5" }}>{String(i+1).padStart(2,"0")}</div>
+            <div style={{ width:34, height:34, borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", background: i===0 ? "#FADF96" : "#F6F5F1", color: i===0 ? "#4A3B00" : "#8a8a90", fontFamily:"var(--mc-mono)", fontSize:12, fontWeight: i===0 ? 700 : 400 }}>{String(i+1).padStart(2,"0")}</div>
             <div style={{ flex:1 }}>
               <div style={{ fontWeight:500, fontSize:15.5, color:"#2b2b2e" }}>{m.nickname || "참가자"}{m.role==="leader" ? " · 리더" : ""}</div>
               <div style={{ display:"flex", gap:8, marginTop:4, flexWrap:"wrap" }}>
@@ -802,7 +804,7 @@ function ChallengeInfo({ challenge, onLeave }) {
       </div>
       <div className="mc-sec">
         <div className="mc-eb">Invite · 친구 초대</div>
-        <div style={{ marginTop:14, padding:"22px 0", borderTop:"1px solid #dcdcde", borderBottom:"1px solid #ececec" }}>
+        <div className="mc-card2 y" style={{ marginTop:14 }}>
           <div style={{ fontFamily:"var(--mc-mono)", fontSize:11.5, letterSpacing:".1em", color:"#8d8d8d" }}>CODE</div>
           <div style={{ fontFamily:"var(--mc-mono)", fontSize:26, letterSpacing:6, color:"#111", marginTop:8 }}>{challenge.invite_code || "—"}</div>
         </div>
@@ -843,7 +845,7 @@ function ChallengeDetail({ challenge, userId, userRole, onBack }) {
         </div>
         <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:720, background:"rgba(255,255,255,.96)", borderTop:"1px solid #dcdcde", display:"flex", justifyContent:"space-around", padding:"0 0 calc(10px + env(safe-area-inset-bottom))" }}>
           {tabs.map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", padding:"8px 18px", color: tab===t.key ? "#111" : "#9a9aa0", fontWeight: tab===t.key ? 700 : 500, fontSize:14, borderTop: tab===t.key ? "2px solid #111" : "2px solid transparent" }}>{t.label}</button>
+            <button key={t.key} onClick={() => setTab(t.key)} style={{ background:"none", border:"none", cursor:"pointer", padding:"8px 18px", color: tab===t.key ? "#111" : "#9a9aa0", fontWeight: tab===t.key ? 700 : 500, fontSize:14, borderTop: tab===t.key ? "3px solid #E6C25A" : "3px solid transparent" }}>{t.label}</button>
           ))}
         </div>
       </div>
@@ -910,10 +912,12 @@ function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
 
   const Arrow = () => (<svg className="mc-ar" viewBox="0 0 24 24" fill="none"><path d="M9.5 5.5L16 12l-6.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);
   const shortName = n => n.replace(/^\d+\s*/, "");
+  const liveCount = ALL_CHALLENGES.filter(c => { const o = allChallenges.find(ac => ac.name === c.name); return o && isActive(o); }).length;
 
   return (
     <div className="mc">
       <nav className="mc-nav">
+        <span className="mk"><i />MIRACLE</span>
         {isLeader && <button onClick={() => setShowLeader(true)}>리더</button>}
         {isAdmin && <button onClick={() => setShowAdmin(true)}>관리</button>}
         {guest
@@ -921,54 +925,56 @@ function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
           : <button onClick={() => supabase.auth.signOut()}>로그아웃</button>}
       </nav>
 
-      <div className="mc-eb" style={{ marginTop:18 }}>Miracle Challenge</div>
-      <h1 className="mc-h">21일 챌린지</h1>
-      <p className="mc-lead">하루 루틴 · 사진 인증 · 21일</p>
+      <section className="mc-hero">
+        <div className="mc-eb">Miracle Challenge</div>
+        <h1 className="mc-h">21일 아로마 챌린지</h1>
+        <p className="mc-lead">하루 루틴 · 사진 인증 · 함께 21일</p>
+        <div className="mc-stats">
+          <div><b>{ALL_CHALLENGES.length}</b><span>PROGRAMS</span></div>
+          <div><b>{liveCount}</b><span>진행 중</span></div>
+          <div><b>21</b><span>DAYS</span></div>
+        </div>
+        <div className="mc-act">
+          {!showCodeInput && (
+            <button className="mc-go" onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)}><span className="y" />코드로 참가하기</button>
+          )}
+        </div>
+      </section>
 
-      <div className="mc-top">
-        {!showCodeInput && (
-          <button className="mc-go" onClick={() => guest ? onNeedLogin() : setShowCodeInput(true)}>코드로 참가하기</button>
-        )}
-        {showCodeInput && (
-          <div className="mc-form">
-            {codeError && <p className="mc-err">{codeError}</p>}
-            <label className="mc-fld"><span>Code</span>
-              <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="예: AB12CD34" style={{ letterSpacing:3 }} /></label>
-            <label className="mc-fld"><span>Nickname</span>
-              <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="닉네임 (선택)" /></label>
-            <div className="mc-btns">
-              <button className="mc-go" onClick={joinWithCode} disabled={codeLoading}>{codeLoading ? "확인 중..." : "참가하기"}</button>
-              <button className="mc-sub" onClick={() => { setShowCodeInput(false); setCodeError(""); }}>취소</button>
-            </div>
+      {showCodeInput && (
+        <div className="mc-form">
+          {codeError && <p className="mc-err">{codeError}</p>}
+          <label className="mc-fld"><span>Code</span>
+            <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="예: AB12CD34" style={{ letterSpacing:3 }} /></label>
+          <label className="mc-fld"><span>Nickname</span>
+            <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="닉네임 (선택)" /></label>
+          <div className="mc-btns">
+            <button className="mc-go" onClick={joinWithCode} disabled={codeLoading}>{codeLoading ? "확인 중..." : "참가하기"}</button>
+            <button className="mc-sub" onClick={() => { setShowCodeInput(false); setCodeError(""); }}>취소</button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {myChallenges.length > 0 && (
         <div className="mc-sec">
-          <div className="mc-eb">My Challenge · 내 챌린지</div>
-          <div className="mc-rows">
+          <div className="mc-sech"><div className="mc-eb">My Challenge · 내 챌린지</div><span>{myChallenges.length}</span></div>
+          <div className="mc-mine">
             {myChallenges.map(c => {
               const elapsed = daysSince(c.start_date);
               const pct = Math.min(100, Math.round((elapsed / 21) * 100));
               const active = isActive(c);
               return (
-                <div key={c.id} className="mc-r">
-                  <div style={{ display:"flex", alignItems:"center" }}>
-                    <button className="mc-rh" onClick={() => active && onSelect(c, c.myRole)} style={{ cursor: active ? "pointer" : "default" }}>
-                      <span className="mc-nm"><b>{shortName(c.name)}</b>
-                        <small>{elapsed}일째 / 21일{c.myRole === "leader" ? " · 리더" : ""}</small>
-                        <span className="mc-bar"><i style={{ width:`${pct}%` }} /></span></span>
-                      <span className={"mc-st" + (active ? " on" : "")}>{active ? `${pct}%` : "종료"}</span>
-                      {active && <Arrow />}
-                    </button>
-                    <button className="mc-x" aria-label="목록에서 지우기" onClick={async (e) => {
-                      e.stopPropagation();
-                      if (!window.confirm("챌린지 목록에서 삭제할까요?")) return;
-                      await supabase.from("challenge_members").delete().eq("challenge_id", c.id).eq("user_id", userId);
-                      load();
-                    }}>✕</button>
-                  </div>
+                <div key={c.id} className={"mc-mc" + (active ? "" : " off")} onClick={() => active && onSelect(c, c.myRole)}>
+                  <div className="nm"><b>{shortName(c.name)}</b>
+                    <small>{active ? `${elapsed}일째 / 21일` : "종료"}{c.myRole === "leader" ? " · 리더" : ""}</small>
+                    <span className="mc-bar"><i style={{ width:`${pct}%` }} /></span></div>
+                  <div className="pc">{active ? `${pct}%` : ""}</div>
+                  <button className="mc-x" aria-label="목록에서 지우기" onClick={async (e) => {
+                    e.stopPropagation();
+                    if (!window.confirm("챌린지 목록에서 삭제할까요?")) return;
+                    await supabase.from("challenge_members").delete().eq("challenge_id", c.id).eq("user_id", userId);
+                    load();
+                  }}>✕</button>
                 </div>
               );
             })}
@@ -977,26 +983,27 @@ function ChallengeList({ userId, userEmail, onSelect, guest, onNeedLogin }) {
       )}
 
       <div className="mc-sec">
-        <div className="mc-eb">Programs · 전체 챌린지</div>
-        <div className="mc-rows">
+        <div className="mc-sech"><div className="mc-eb">Programs · 전체 챌린지</div><span>{ALL_CHALLENGES.length}</span></div>
+        <div className="mc-grid">
           {ALL_CHALLENGES.map((c, i) => {
             const opened = allChallenges.find(ac => ac.name === c.name);
             const active = opened && isActive(opened);
             const joined = myChallenges.find(mc => mc.name === c.name);
             const isOpen = openName === c.name;
+            const total = c.routines.reduce((a, r) => a + r.duration, 0);
             return (
-              <div key={c.name} className={"mc-r" + (isOpen ? " open" : "")}>
-                <button className="mc-rh" onClick={() => setOpenName(isOpen ? "" : c.name)}>
+              <div key={c.name} className={"mc-card" + (isOpen ? " open" : "") + (active ? " live" : "")}>
+                <button className="mc-ch" onClick={() => setOpenName(isOpen ? "" : c.name)}>
                   <span className="mc-no">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="mc-nm"><b>{shortName(c.name)}</b>
-                    <small>루틴 {c.routines.length}개{joined ? " · 참가중" : ""}</small></span>
-                  <span className={"mc-st" + (active ? " on" : "")}>{active ? "진행 중" : opened ? "종료" : "준비 중"}</span>
+                  <span className="mc-cn"><b>{shortName(c.name)}</b>
+                    <small><span className={"mc-chip" + (active ? " on" : opened ? " done" : "")}>{active ? "진행 중" : opened ? "종료" : "준비 중"}</span>
+                      루틴 {c.routines.length} · 하루 {total}분{joined ? " · 참가중" : ""}</small></span>
                   <Arrow />
                 </button>
                 {isOpen && (
                   <div className="mc-rt">
-                    <ul>{c.routines.map(r => (<li key={r.id}><span>{r.name}</span><em>{r.duration}분</em></li>))}</ul>
-                    <p>21일 · 매일 · 사진 인증</p>
+                    <ul>{c.routines.map((r, j) => (<li key={r.id}><i>{String(j + 1).padStart(2, "0")}</i><span>{r.name}</span><em>{r.duration}분</em></li>))}</ul>
+                    <p><span className="mc-chip">21일</span><span className="mc-chip">매일</span><span className="mc-chip">사진 인증</span></p>
                   </div>
                 )}
               </div>
